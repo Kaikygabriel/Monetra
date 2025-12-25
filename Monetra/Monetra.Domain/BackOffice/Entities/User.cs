@@ -21,6 +21,15 @@ public class User : Entity
     public Email Email { get;private set; }
     public string Password { get;private set; }
 
+
+    public void UpdatePassword(string password)
+    {
+        if (PasswordIsValid(password))
+            throw new UserException("Password in user is invalid!");
+        Password = password;
+    }
+    
     private bool PasswordIsValid(string password)
         => string.IsNullOrWhiteSpace(password) || password.Length <= 4;
+
 }
