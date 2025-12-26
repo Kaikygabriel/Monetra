@@ -5,13 +5,15 @@ namespace Monetra.Domain.BackOffice.Entities;
 
 public class Portfolio : Entity
 {
-    public Portfolio(string title)
+    protected Portfolio()
     {
-        Title = title;
+        
     }
 
-    public Portfolio( Investment fixedIncome, Investment variableIncome, string title,bool visible)
+    public Portfolio( Investment fixedIncome, Investment variableIncome, string title)
     {
+        if (string.IsNullOrEmpty(title) || title.Length < 3)
+            throw new System.Exception("Title in portfolio is invalid");
         Visible = false;
         CreateDate = DateTime.Now;
         Title = title;

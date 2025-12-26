@@ -3,10 +3,7 @@ using Monetra.Application.Commum.Abstraction;
 namespace Monetra.Application.Commum;
 
 public class Result<T> : Result
-{
-    public bool IsSuccess { get; }
-    public Error Error { get; }
-    public T Value { get; }
+{    public T Value { get; }
 
     private Result(Error error) : base(error)
     {
