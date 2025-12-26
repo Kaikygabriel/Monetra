@@ -19,4 +19,53 @@ public static class MenssagesEmail
         </div>
     </body>
     </html>";
+
+    public static string LoginCustomerMenssage(string email)
+        => @$"<!DOCTYPE html>
+            <html lang=""pt-BR"">
+            <head>
+                <meta charset=""UTF-8"">
+                <title>Login realizado</title>
+            </head>
+            <body style=""margin:0; padding:0; background-color:#f4f6f8; font-family: Arial, Helvetica, sans-serif;"">
+
+                <table width=""100%"" cellpadding=""0"" cellspacing=""0"">
+                    <tr>
+                        <td align=""center"" style=""padding:20px;"">
+                            
+                            <table width=""520"" cellpadding=""0"" cellspacing=""0""
+                                   style=""background-color:#ffffff; border-radius:10px; padding:25px;"">
+                                
+                                <tr>
+                                    <td style=""text-align:center;"">
+                                        <h2 style=""color:#6f42c1; margin-bottom:10px;"">Monetra</h2>
+                                        <p style=""color:#555; font-size:14px;"">
+                                            Olá <strong>{email}</strong>, um login foi realizado com sucesso na sua conta.
+                                        </p>
+
+                                        <p style=""font-size:13px; color:#777; margin-top:15px;"">
+                                            {DateTime.Now}
+                                        </p>
+
+                                        <p style=""font-size:13px; color:#777; margin-top:15px;"">
+                                            Não foi você? Recomendamos alterar sua senha.
+                                        </p>
+
+                                     
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                            <p style=""font-size:11px; color:#999; margin-top:10px;"">
+                                Email automático de segurança · Monetra
+                            </p>
+
+                        </td>
+                    </tr>
+                </table>
+
+            </body>
+            </html>
+            ";
 }

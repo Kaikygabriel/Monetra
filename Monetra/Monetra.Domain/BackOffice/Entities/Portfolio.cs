@@ -12,7 +12,7 @@ public class Portfolio : Entity
 
     public Portfolio( Investment fixedIncome, Investment variableIncome, string title,bool visible)
     {
-        Visible = visible;
+        Visible = false;
         CreateDate = DateTime.Now;
         Title = title;
         FixedIncome = fixedIncome;

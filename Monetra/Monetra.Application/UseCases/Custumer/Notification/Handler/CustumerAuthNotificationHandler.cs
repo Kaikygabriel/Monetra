@@ -4,16 +4,16 @@ using Monetra.Domain.BackOffice.Interfaces.Services;
 
 namespace Monetra.Application.UseCases.Custumer.Notification.Handler;
 
-public class NotificationRegisterCustomerHandler: INotificationHandler<RegisterCustomerNotification>
+public class CustumerAuthNotificationHandler: INotificationHandler<CustumerAuthNotification>
 {
     private IServiceEmail _emailService;
 
-    public NotificationRegisterCustomerHandler(IServiceEmail emailService)
+    public CustumerAuthNotificationHandler(IServiceEmail emailService)
     {
         _emailService = emailService;
     }
 
-    public async Task Handle(RegisterCustomerNotification notification, CancellationToken cancellationToken)
+    public async Task Handle(CustumerAuthNotification notification, CancellationToken cancellationToken)
     {
         await _emailService.TrySendEmail(notification.Email);
     }

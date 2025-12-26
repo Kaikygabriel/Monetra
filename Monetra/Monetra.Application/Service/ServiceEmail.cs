@@ -1,6 +1,8 @@
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using Monetra.Application.UseCases.Custumer.Notification;
+using Monetra.Domain.BackOffice.Entities;
 using Monetra.Domain.BackOffice.Interfaces.Services;
 using Monetra.Domain.BackOffice.ObjectValues;
 
@@ -32,7 +34,7 @@ public class ServiceEmail : IServiceEmail
     {
         var mensagem = new MimeMessage();
     
-        mensagem.From.Add(new MailboxAddress("Monetra", _configuration["EmailConfig:Email"]));
+        mensagem.From.Add(new MailboxAddress("monetra", _configuration["EmailConfig:Email"]));
         
         mensagem.To.Add(new MailboxAddress(email.ToName, email.ToAddress));
     
@@ -48,5 +50,13 @@ public class ServiceEmail : IServiceEmail
             await client.SendAsync(mensagem);
             await client.DisconnectAsync(true);
         }
+    }
+    public static EmailSending CreateMenssageOfEmail(Customer customer,string title)
+    {
+        return
+            new EmailSending(title,
+                customer.User.Email.Address,
+                customer.Name,
+                MenssagesEmail.RegisterCustomerMenssage(customer.User.Email.Address));
     }
 }

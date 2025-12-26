@@ -15,6 +15,10 @@ public class ServiceUser : IServiceUser
         _unitOfWork = unitOfWork;
     }
 
+
+    public bool CheckPassword(User user, string password)
+        => BCrypt.Net.BCrypt.Verify(password, user.Password);
+
     public async Task<bool> TryCreateAsync(RegisterUserDto model)
     {
         try
