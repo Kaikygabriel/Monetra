@@ -15,6 +15,6 @@ public class NotificationRegisterCustomerHandler: INotificationHandler<RegisterC
 
     public async Task Handle(RegisterCustomerNotification notification, CancellationToken cancellationToken)
     {
-        _emailService.TrySendEmail(notification.Email);
+        await _emailService.TrySendEmail(notification.Email);
     }
 }

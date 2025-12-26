@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monetra.Domain", "Monetra.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monetra.Infra", "Monetra.Infra\Monetra.Infra.csproj", "{D190D560-C753-4D54-AD35-2B8F8AFCD23F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monetra.Test", "Monetra.Test\Monetra.Test.csproj", "{38416AEB-2CB6-4195-88C4-E7B4A95C0C76}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{D190D560-C753-4D54-AD35-2B8F8AFCD23F}.Release|x64.Build.0 = Release|Any CPU
 		{D190D560-C753-4D54-AD35-2B8F8AFCD23F}.Release|x86.ActiveCfg = Release|Any CPU
 		{D190D560-C753-4D54-AD35-2B8F8AFCD23F}.Release|x86.Build.0 = Release|Any CPU
+		{38416AEB-2CB6-4195-88C4-E7B4A95C0C76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38416AEB-2CB6-4195-88C4-E7B4A95C0C76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38416AEB-2CB6-4195-88C4-E7B4A95C0C76}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{38416AEB-2CB6-4195-88C4-E7B4A95C0C76}.Debug|x64.Build.0 = Debug|Any CPU
+		{38416AEB-2CB6-4195-88C4-E7B4A95C0C76}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{38416AEB-2CB6-4195-88C4-E7B4A95C0C76}.Debug|x86.Build.0 = Debug|Any CPU
+		{38416AEB-2CB6-4195-88C4-E7B4A95C0C76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38416AEB-2CB6-4195-88C4-E7B4A95C0C76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38416AEB-2CB6-4195-88C4-E7B4A95C0C76}.Release|x64.ActiveCfg = Release|Any CPU
+		{38416AEB-2CB6-4195-88C4-E7B4A95C0C76}.Release|x64.Build.0 = Release|Any CPU
+		{38416AEB-2CB6-4195-88C4-E7B4A95C0C76}.Release|x86.ActiveCfg = Release|Any CPU
+		{38416AEB-2CB6-4195-88C4-E7B4A95C0C76}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,7 +10,7 @@ public struct Email
     }
     public Email(string address)
     {
-        if (IsValid(address))
+        if (!IsValid(address))
             throw new EmailException("Address in email is invalid !");
         Address = address;
     }
@@ -24,3 +24,4 @@ public struct Email
         return true;
     }
 }
+ 

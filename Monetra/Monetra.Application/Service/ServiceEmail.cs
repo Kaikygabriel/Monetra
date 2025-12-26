@@ -36,7 +36,7 @@ public class ServiceEmail : IServiceEmail
         
         mensagem.To.Add(new MailboxAddress(email.ToName, email.ToAddress));
     
-        mensagem.Subject = email.Menssage;
+        mensagem.Subject = email.Title;
         mensagem.Body = new TextPart("html") { Text = email.Body };
 
         using (var client = new SmtpClient())

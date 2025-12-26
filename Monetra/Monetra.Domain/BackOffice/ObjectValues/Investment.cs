@@ -14,7 +14,7 @@ public class Investment
 
     public decimal CalculateValueByPercentageInYear(int valuePercentage)
     {
-        var final = Math.Abs(valuePercentage / 100);
+        decimal final = (decimal)valuePercentage / 100;
         return (final * Value) + Value;
     }
 
