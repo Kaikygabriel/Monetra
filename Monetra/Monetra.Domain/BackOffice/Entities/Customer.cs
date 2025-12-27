@@ -17,6 +17,7 @@ public class Customer : Entity
     public string Name { get; set; }
     public User User { get; set; }
     public Portfolio Portfolio { get; set; }
+    public Guid PortfolioId { get; set; }
 
     public void AddPortfolio(Portfolio port)
     {

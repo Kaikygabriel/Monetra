@@ -1,4 +1,4 @@
-namespace Monetra.Application.UseCases.Custumer.Notification;
+namespace Monetra.Application.Commum;
 
 public static class MenssagesEmail
 {

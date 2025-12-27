@@ -2,7 +2,7 @@ using Monetra.Domain.BackOffice.Exception;
 
 namespace Monetra.Domain.BackOffice.ObjectValues;
 
-public struct Email
+public class Email
 {
     public Email()
     {

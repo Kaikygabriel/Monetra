@@ -38,7 +38,7 @@ public class RegisterCustomerHandler:HandlerCustomerBase, IRequestHandler<Regist
         _unitOfWork.CustomerRepository.Create(customer);
         await _unitOfWork.CommitAsync();
 
-        await _mediator.Publish(new CustumerAuthNotification(ServiceEmail.CreateMenssageOfEmail(customer,"Conta criada!")));
+        await _mediator.Publish(new CustumerAuthNotification(customer,"Conta criada!"));
         
         return Result<string>.Sucess(GenerateJwtTokenOfCustomer(customer));
     }

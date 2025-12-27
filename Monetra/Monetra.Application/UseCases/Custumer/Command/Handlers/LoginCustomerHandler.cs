@@ -33,7 +33,7 @@ public class LoginCustomerHandler : HandlerCustomerBase,IRequestHandler<LoginCus
         if (customer is null || PasswordIsValid(customer.User,request.Password))
             return Result<string>.Failure(Errors.PasswordInvalid);
         
-        await _mediator.Publish(new CustumerAuthNotification(ServiceEmail.CreateMenssageOfEmail(customer,"Bem Vindo!")));
+        await _mediator.Publish(new CustumerAuthNotification(customer,"Bem Vindo!"));
 
         return Result<string>.Sucess(GenerateJwtTokenOfCustomer(customer));
     }

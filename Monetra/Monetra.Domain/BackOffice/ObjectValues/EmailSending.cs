@@ -36,4 +36,6 @@ public class EmailSending
 
     private bool StringIsValid(string text, int lenghtExpered)
         => string.IsNullOrWhiteSpace(text) || text.Length <= lenghtExpered;
+    
+    
 }
