@@ -10,6 +10,18 @@ public class Portfolio : Entity
         
     }
 
+    public Portfolio( Investment fixedIncome, Investment variableIncome, string title, Customer customer)
+    {
+        if (string.IsNullOrEmpty(title) || title.Length < 3)
+            throw new System.Exception("Title in portfolio is invalid");
+        Visible = false;
+        CreateDate = DateTime.Now;
+        Title = title;
+        Customer = customer;
+        FixedIncome = fixedIncome;
+        VariableIncome = variableIncome;
+        Id = Guid.NewGuid();
+    }
     public Portfolio( Investment fixedIncome, Investment variableIncome, string title)
     {
         if (string.IsNullOrEmpty(title) || title.Length < 3)
@@ -19,6 +31,7 @@ public class Portfolio : Entity
         Title = title;
         FixedIncome = fixedIncome;
         VariableIncome = variableIncome;
+        Id = Guid.NewGuid();
     }
 
     public bool Visible { get;private set; }
@@ -26,7 +39,9 @@ public class Portfolio : Entity
     public DateTime CreateDate { get;private set; }
     public Investment FixedIncome  { get;private set; }
     public Investment VariableIncome  { get;private set; }
-
+    public Customer Customer { get;private set; }
+    public Guid CustomerId { get; set; }
+    
     public decimal TotalPrice()
         => FixedIncome.Value + VariableIncome.Value;
 
@@ -34,4 +49,10 @@ public class Portfolio : Entity
         => Visible = false;
     public void ConvertToVisible()
         => Visible = true;
+
+    public void AddCustomer(Customer customer)
+    {
+        if (Customer is null)
+            Customer = customer;
+    }
 }

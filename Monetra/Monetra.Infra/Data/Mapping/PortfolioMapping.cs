@@ -32,5 +32,6 @@ public class PortfolioMapping : IEntityTypeConfiguration<Portfolio>
                 .HasColumnType("MONEY")
                 .IsRequired(true);
         });
+        
     }
 }

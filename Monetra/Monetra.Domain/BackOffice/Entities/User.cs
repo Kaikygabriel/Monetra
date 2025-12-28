@@ -16,6 +16,7 @@ public class User : Entity
             throw new UserException("Password in user is invalid!");
         Password = password;
         Email = email;
+        Id = Guid.NewGuid();
     }
 
     public Email Email { get;private set; }

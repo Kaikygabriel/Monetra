@@ -1,8 +1,6 @@
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
-using Monetra.Application.Commum;
-using Monetra.Application.UseCases.Custumer.Notification;
 using Monetra.Domain.BackOffice.Entities;
 using Monetra.Domain.BackOffice.Interfaces.Services;
 using Monetra.Domain.BackOffice.ObjectValues;
@@ -52,12 +50,12 @@ public class ServiceEmail : IServiceEmail
             await client.DisconnectAsync(true);
         }
     }
-    public static EmailSending CreateMenssageOfEmail(Customer customer,string title)
+    public static EmailSending CreateMenssageOfEmail(Customer customer,string title,string menssage)
     {
         return
             new EmailSending(title,
                 customer.User.Email.Address,
                 customer.Name,
-                MenssagesEmail.RegisterCustomerMenssage(customer.User.Email.Address));
+                menssage);
     }
 }

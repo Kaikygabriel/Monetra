@@ -17,7 +17,7 @@ public class CustomerMapping : IEntityTypeConfiguration<Customer>
             .IsRequired();
     
         builder.HasOne(x => x.User);
-        builder.HasOne(x => x.Portfolio);
-    
+        builder.HasMany(x => x.Portfolios)
+            .WithOne(x=>x.Customer);
     }
 }

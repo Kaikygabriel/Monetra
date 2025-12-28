@@ -1,9 +1,9 @@
 using MediatR;
 using Monetra.Application.Service;
-using Monetra.Application.UseCases.Custumer.Notification.Request;
+using Monetra.Application.UseCases.Customer.Notification.Request;
 using Monetra.Domain.BackOffice.Interfaces.Services;
 
-namespace Monetra.Application.UseCases.Custumer.Notification.Handler;
+namespace Monetra.Application.UseCases.Customer.Notification.Handler;
 
 public class CustumerAuthNotificationHandler: INotificationHandler<CustumerAuthNotification>
 {
@@ -16,7 +16,8 @@ public class CustumerAuthNotificationHandler: INotificationHandler<CustumerAuthN
 
     public async Task Handle(CustumerAuthNotification notification, CancellationToken cancellationToken)
     {
-        var emailSeding = ServiceEmail.CreateMenssageOfEmail(notification.Customer,notification.Title);
+        var emailSeding = ServiceEmail.CreateMenssageOfEmail
+            (notification.Customer,notification.Title,notification.menssage);
         await _emailService.TrySendEmail(emailSeding);
     }
 }

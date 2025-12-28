@@ -1,18 +1,14 @@
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Monetra.Application.Commum;
 using Monetra.Application.DTOs.Custumer;
-using Monetra.Application.Service;
 using Monetra.Application.Service.Abstraction;
+using Monetra.Application.UseCases.Customer.Notification.Request;
 using Monetra.Application.UseCases.Custumer.Command.Request;
-using Monetra.Application.UseCases.Custumer.Notification;
-using Monetra.Application.UseCases.Custumer.Notification.Request;
 using Monetra.Domain.BackOffice.Entities;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 using Monetra.Domain.BackOffice.Interfaces.Services;
-using Monetra.Domain.BackOffice.ObjectValues;
 
-namespace Monetra.Application.UseCases.Custumer.Command.Handlers;
+namespace Monetra.Application.UseCases.Customer.Command.Handlers;
 
 public class LoginCustomerHandler : HandlerCustomerBase,IRequestHandler<LoginCustomerRequest,Result<string>>
 {
@@ -33,7 +29,8 @@ public class LoginCustomerHandler : HandlerCustomerBase,IRequestHandler<LoginCus
         if (customer is null || PasswordIsValid(customer.User,request.Password))
             return Result<string>.Failure(Errors.PasswordInvalid);
         
-        await _mediator.Publish(new CustumerAuthNotification(customer,"Bem Vindo!"));
+        await _mediator.Publish(new CustumerAuthNotification
+            (customer,"Bem Vindo!",MenssagesEmail.LoginCustomerMenssage(customer.User.Email.Address)));
 
         return Result<string>.Sucess(GenerateJwtTokenOfCustomer(customer));
     }

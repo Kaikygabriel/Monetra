@@ -4,7 +4,7 @@ namespace Monetra.Domain.BackOffice.Entities;
 
 public class Customer : Entity
 {
-    protected Customer()
+    public Customer()
     {
         
     }
@@ -12,16 +12,16 @@ public class Customer : Entity
     {
         User = user;
         Name = name;
+        Id = Guid.NewGuid();
     }
 
-    public string Name { get; set; }
-    public User User { get; set; }
-    public Portfolio Portfolio { get; set; }
-    public Guid PortfolioId { get; set; }
+    public string Name { get;private set; }
+    public User User { get;private set; }
+    public List<Portfolio> Portfolios { get; private set; } = new();
 
-    public void AddPortfolio(Portfolio port)
+    public void AddPortifolio(Portfolio port)
     {
-        if (Portfolio is null) return; 
-        Portfolio = port;
+        if (port is null) return; 
+        Portfolios.Add(port);
     } 
 }

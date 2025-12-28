@@ -12,7 +12,7 @@ public class PortfolioTeste
     [Fact]
     public void Should_Return_NotNull_If_Title_Are_Valid()
     {
-        var result = new Portfolio(InvestmentValid,InvestmentValid,Title_Valid);
+        var result = new Portfolio(InvestmentValid,InvestmentValid,Title_Valid,new());
         Assert.NotNull(result);
     }
 
@@ -21,13 +21,13 @@ public class PortfolioTeste
     {
         Assert.Throws<Exception>(() 
         => new Portfolio
-            (InvestmentValid, InvestmentValid, Title_Invalid));
+            (InvestmentValid, InvestmentValid, Title_Invalid,new()));
     }
 
     [Fact]
     public void Should_Return_True_When_Visible_Is_ConvertToVisible()
     {
-        var result = new Portfolio(InvestmentValid,InvestmentValid,Title_Valid);
+        var result = new Portfolio(InvestmentValid,InvestmentValid,Title_Valid,new());
         result.ConvertToVisible();
         Assert.True(result.Visible);        
 
@@ -35,7 +35,7 @@ public class PortfolioTeste
     [Fact]
     public void Should_Return_True_When_Visible_Is_ConvertToNoVisible()
     {
-        var result = new Portfolio(InvestmentValid,InvestmentValid,Title_Valid);
+        var result = new Portfolio(InvestmentValid,InvestmentValid,Title_Valid,new());
         result.ConvertToNoVisible();
         Assert.False(result.Visible);        
 

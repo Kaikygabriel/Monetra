@@ -19,36 +19,14 @@ public class ServiceUser : IServiceUser
     public bool CheckPassword(User user, string password)
         => BCrypt.Net.BCrypt.Verify(password, user.Password);
 
-    public async Task<bool> TryCreateAsync(RegisterUserDto model)
+    public async Task<bool> UserExisting(RegisterUserDto model)
     {
-        try
-        {
-            return await CreateUser(model);
-        }
-        catch (Exception e)
-        {
-            return false;
-        }
-    }
-
-    private async Task<bool> CreateUser(RegisterUserDto model)
-    {
-        if (await UserExisting(model.Email))
-            return false;
-        User user = model;
-        CreateHashPassword(user);
-        _unitOfWork.UserRepository.Create(user);
-        return true;
-    }
-
-    private async Task<bool> UserExisting(string email)
-    {
-        if (await _unitOfWork.UserRepository.GetByPredicate(x => x.Email.Address == email) is not null)
+        if (await _unitOfWork.UserRepository.GetByPredicate(x => x.Email.Address == model.Email) is not null)
             return true;
         return false;
     }
 
-    private void CreateHashPassword(User user)
+    public void AddHashPassword(User user)
     {
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
         user.UpdatePassword(passwordHash);

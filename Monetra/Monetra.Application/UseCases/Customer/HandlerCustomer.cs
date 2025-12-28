@@ -1,11 +1,10 @@
 using System.Security.Claims;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Monetra.Application.Service.Abstraction;
-using Monetra.Domain.BackOffice.Entities;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 using Monetra.Domain.BackOffice.Interfaces.Services;
 
-namespace Monetra.Application.UseCases.Custumer;
+namespace Monetra.Application.UseCases.Customer;
 
 public class HandlerCustomerBase:  HandlerBase
 {
@@ -17,11 +16,11 @@ public class HandlerCustomerBase:  HandlerBase
         _serviceUser = serviceUser;
     }
 
-    protected string GenerateJwtTokenOfCustomer(Customer customer)
+    protected string GenerateJwtTokenOfCustomer(Domain.BackOffice.Entities.Customer customer)
     {
         return _tokenService.GenerateToken(GenerateClaimsOfCustomer(customer));
     }
-    private IEnumerable<Claim> GenerateClaimsOfCustomer(Customer customer)
+    private IEnumerable<Claim> GenerateClaimsOfCustomer(Domain.BackOffice.Entities.Customer customer)
     {
         var claims = new List<Claim>()
         {

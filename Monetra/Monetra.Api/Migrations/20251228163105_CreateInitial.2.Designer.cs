@@ -12,8 +12,8 @@ using Monetra.Infra.Data.Context;
 namespace Monetra.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251227163148_CreateInitial")]
-    partial class CreateInitial
+    [Migration("20251228163105_CreateInitial.2")]
+    partial class CreateInitial2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,16 +36,11 @@ namespace Monetra.Api.Migrations
                         .HasMaxLength(120)
                         .HasColumnType("VARCHAR");
 
-                    b.Property<Guid>("PortfolioId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("Pk_customer_id");
-
-                    b.HasIndex("PortfolioId");
 
                     b.HasIndex("UserId");
 
@@ -61,6 +56,9 @@ namespace Monetra.Api.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("DATETIME");
 
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(120)
@@ -71,6 +69,8 @@ namespace Monetra.Api.Migrations
 
                     b.HasKey("Id")
                         .HasName("Pk_Portofolio_Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Portfolios");
                 });
@@ -94,25 +94,23 @@ namespace Monetra.Api.Migrations
 
             modelBuilder.Entity("Monetra.Domain.BackOffice.Entities.Customer", b =>
                 {
-                    b.HasOne("Monetra.Domain.BackOffice.Entities.Portfolio", "Portfolio")
-                        .WithMany()
-                        .HasForeignKey("PortfolioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Monetra.Domain.BackOffice.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Portfolio");
-
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Monetra.Domain.BackOffice.Entities.Portfolio", b =>
                 {
+                    b.HasOne("Monetra.Domain.BackOffice.Entities.Customer", "Customer")
+                        .WithMany("Portfolios")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("Monetra.Domain.BackOffice.ObjectValues.Investment", "FixedIncome", b1 =>
                         {
                             b1.Property<Guid>("PortfolioId")
@@ -144,6 +142,8 @@ namespace Monetra.Api.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("PortfolioId");
                         });
+
+                    b.Navigation("Customer");
 
                     b.Navigation("FixedIncome")
                         .IsRequired();
@@ -178,6 +178,11 @@ namespace Monetra.Api.Migrations
 
                     b.Navigation("Email")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Monetra.Domain.BackOffice.Entities.Customer", b =>
+                {
+                    b.Navigation("Portfolios");
                 });
 #pragma warning restore 612, 618
         }
