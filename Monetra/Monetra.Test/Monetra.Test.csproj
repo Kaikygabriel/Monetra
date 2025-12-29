@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Monetra.Application\Monetra.Application.csproj" />
     <ProjectReference Include="..\Monetra.Domain\Monetra.Domain.csproj" />
   </ItemGroup>
 

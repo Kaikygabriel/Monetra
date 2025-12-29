@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Monetra.Domain.BackOffice.Commum;
 using Monetra.Domain.BackOffice.Entities.Abstraction;
 using Monetra.Domain.BackOffice.Enum;
 
