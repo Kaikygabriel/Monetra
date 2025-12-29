@@ -1,8 +1,7 @@
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Monetra.Application.Commum;
-using Monetra.Application.Commum.Abstraction;
 using Monetra.Application.UseCases.Portfolio.Commands.Request;
+using Monetra.Domain.BackOffice.Commum;
+using Monetra.Domain.BackOffice.Commum.Abstraction;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 
 namespace Monetra.Application.UseCases.Portfolio.Commands.Handler;
@@ -30,7 +29,7 @@ public class UpdatePortfolioHandler : HandlerBase , IRequestHandler<UpdatePortfo
 
     private async Task<bool> CustomerIsEquals(Guid customerId, Guid IdPortfloio)
     {
-        var portfolios =await  _unitOfWork.CustomerRepository.GetPortfolioFromCustumer(customerId);
+        var portfolios =await  _unitOfWork.PortfolioRepository.GetPortfolioFromCustumer(customerId);
         var portfolio = portfolios.FirstOrDefault(x=>x.Id == IdPortfloio);
         if (portfolio is null)
             return false;

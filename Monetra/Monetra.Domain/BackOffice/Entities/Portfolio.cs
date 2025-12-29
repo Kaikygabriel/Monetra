@@ -1,4 +1,5 @@
 using Monetra.Domain.BackOffice.Entities.Abstraction;
+using Monetra.Domain.BackOffice.Enum;
 using Monetra.Domain.BackOffice.ObjectValues;
 
 namespace Monetra.Domain.BackOffice.Entities;
@@ -9,19 +10,7 @@ public class Portfolio : Entity
     {
         
     }
-
-    public Portfolio( Investment fixedIncome, Investment variableIncome, string title, Customer customer)
-    {
-        if (string.IsNullOrEmpty(title) || title.Length < 3)
-            throw new System.Exception("Title in portfolio is invalid");
-        Visible = false;
-        CreateDate = DateTime.Now;
-        Title = title;
-        Customer = customer;
-        FixedIncome = fixedIncome;
-        VariableIncome = variableIncome;
-        Id = Guid.NewGuid();
-    }
+    
     public Portfolio( Investment fixedIncome, Investment variableIncome, string title)
     {
         if (string.IsNullOrEmpty(title) || title.Length < 3)
@@ -41,6 +30,7 @@ public class Portfolio : Entity
     public Investment VariableIncome  { get;private set; }
     public Customer Customer { get;private set; }
     public Guid CustomerId { get; set; }
+    public List<Transaction> Transactions { get; private set; } = new();
     
     public decimal TotalPrice()
         => FixedIncome.Value + VariableIncome.Value;
@@ -55,4 +45,29 @@ public class Portfolio : Entity
         if (Customer is null)
             Customer = customer;
     }
+
+    private void ApplyTransaction(decimal signedValue, TransactionType type)
+    {
+        if (type == TransactionType.FixedIncome)
+            FixedIncome.AddValue(signedValue);
+        else
+            VariableIncome.AddValue(signedValue);
+
+        Transactions.Add(
+            Transaction.Factories.Create(Id, signedValue, type)
+        );
+    }
+
+    public void AddValue(decimal value, TransactionType type)
+    {
+        if (value <= 0) throw new System.Exception("Invalid value");
+        ApplyTransaction(value, type);
+    }
+
+    public void RemoveValue(decimal value, TransactionType type)
+    {
+        if (value <= 0) throw new System.Exception("Invalid value");
+        ApplyTransaction(-value, type);
+    }
+
 }

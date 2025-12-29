@@ -15,11 +15,5 @@ public class CustomerRepository : Repository<Domain.BackOffice.Entities.Customer
         return await  _context.Customers.AsNoTracking().Include(x=>x.User)
             .FirstOrDefaultAsync(x => x.User.Email.Address == email);
     }
-
-    public async Task<IEnumerable<Domain.BackOffice.Entities.Portfolio>> GetPortfolioFromCustumer(Guid id)
-    {
-        var customer =  await _context.Customers.AsNoTracking().Include(x=>x.Portfolios)
-            .FirstOrDefaultAsync(x => x.Id == id);
-        return customer.Portfolios;
-    }
+    
 }

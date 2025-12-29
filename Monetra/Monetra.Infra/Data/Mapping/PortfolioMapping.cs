@@ -8,6 +8,7 @@ public class PortfolioMapping : IEntityTypeConfiguration<Portfolio>
 {
     public void Configure(EntityTypeBuilder<Portfolio> builder)
     {
+        builder.ToTable("Portfolio");
         builder.HasKey(x => x.Id)
             .HasName("Pk_Portofolio_Id");
         builder.Property(x => x.CreateDate)
@@ -32,6 +33,7 @@ public class PortfolioMapping : IEntityTypeConfiguration<Portfolio>
                 .HasColumnType("MONEY")
                 .IsRequired(true);
         });
-        
+        builder.HasMany(x => x.Transactions)
+            .WithOne(x => x.Portfolio);
     }
 }

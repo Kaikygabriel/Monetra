@@ -1,6 +1,6 @@
 using MediatR;
-using Monetra.Application.Commum;
 using Monetra.Application.DTOs.Custumer;
+using Monetra.Domain.BackOffice.Commum;
 
 namespace Monetra.Application.UseCases.Customer.Command.Request;
 

@@ -1,6 +1,6 @@
-using Monetra.Application.Commum.Abstraction;
+using Monetra.Domain.BackOffice.Commum.Abstraction;
 
-namespace Monetra.Application.Commum;
+namespace Monetra.Domain.BackOffice.Commum;
 
 public class Result<T> : Result
 {   

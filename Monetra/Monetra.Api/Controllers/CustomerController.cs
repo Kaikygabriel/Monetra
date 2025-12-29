@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Monetra.Application.UseCases.Customer.Command.Request;
-using Monetra.Application.UseCases.Custumer.Command.Request;
 
 namespace Monetra.Api.Controllers;
 

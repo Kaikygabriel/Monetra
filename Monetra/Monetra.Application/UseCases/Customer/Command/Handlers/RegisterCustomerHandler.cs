@@ -1,17 +1,12 @@
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Monetra.Application.Commum;
-using Monetra.Application.Service;
 using Monetra.Application.Service.Abstraction;
-using Monetra.Application.UseCases.Customer;
 using Monetra.Application.UseCases.Customer.Command.Request;
 using Monetra.Application.UseCases.Customer.Notification.Request;
-using Monetra.Application.UseCases.Custumer.Command.Request;
-using Monetra.Domain.BackOffice.Entities;
+using Monetra.Domain.BackOffice.Commum;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 using Monetra.Domain.BackOffice.Interfaces.Services;
 
-namespace Monetra.Application.UseCases.Custumer.Command.Handlers;
+namespace Monetra.Application.UseCases.Customer.Command.Handlers;
 
 public class RegisterCustomerHandler:HandlerCustomerBase, IRequestHandler<RegisterCostumerRequest,Result<string>>
 {

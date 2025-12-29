@@ -1,8 +1,7 @@
 using MediatR;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Monetra.Application.Commum;
-using Monetra.Application.Commum.Abstraction;
 using Monetra.Application.UseCases.Portfolio.Commands.Request;
+using Monetra.Domain.BackOffice.Commum;
+using Monetra.Domain.BackOffice.Commum.Abstraction;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 
 namespace Monetra.Application.UseCases.Portfolio.Commands.Handler;

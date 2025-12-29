@@ -44,7 +44,7 @@ namespace Monetra.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Portfolios",
+                name: "Portfolio",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -59,9 +59,30 @@ namespace Monetra.Api.Migrations
                 {
                     table.PrimaryKey("Pk_Portofolio_Id", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Portfolios_Customer_CustomerId",
+                        name: "FK_Portfolio_Customer_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Transaction",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Amount = table.Column<decimal>(type: "MONEY", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "DATETIME", nullable: false),
+                    PortfolioId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transaction", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Transaction_Portfolio_PortfolioId1",
+                        column: x => x.PortfolioId1,
+                        principalTable: "Portfolio",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -72,9 +93,14 @@ namespace Monetra.Api.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Portfolios_CustomerId",
-                table: "Portfolios",
+                name: "IX_Portfolio_CustomerId",
+                table: "Portfolio",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transaction_PortfolioId1",
+                table: "Transaction",
+                column: "PortfolioId1");
 
             migrationBuilder.CreateIndex(
                 name: "UX_User_Email",
@@ -87,7 +113,10 @@ namespace Monetra.Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Portfolios");
+                name: "Transaction");
+
+            migrationBuilder.DropTable(
+                name: "Portfolio");
 
             migrationBuilder.DropTable(
                 name: "Customer");

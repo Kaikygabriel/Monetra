@@ -1,6 +1,7 @@
 using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Customer;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Portifolio;
+using Monetra.Domain.BackOffice.Interfaces.Repostiries.Transaction;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.User;
 using Monetra.Infra.Data.Context;
 using Monetra.Infra.Repositories.Customer;
@@ -44,6 +45,8 @@ public class UnitOfWork : IUnitOfWork
             return _userRepository = _userRepository ?? new(_context);
         }
     }
+
+    public ITransactionRepository TransactionRepository { get; }
 
     public async Task CommitAsync()
         => await _context.SaveChangesAsync();

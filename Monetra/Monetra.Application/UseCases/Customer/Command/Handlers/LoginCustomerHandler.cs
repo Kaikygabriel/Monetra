@@ -1,9 +1,9 @@
 using MediatR;
-using Monetra.Application.Commum;
 using Monetra.Application.DTOs.Custumer;
 using Monetra.Application.Service.Abstraction;
+using Monetra.Application.UseCases.Customer.Command.Request;
 using Monetra.Application.UseCases.Customer.Notification.Request;
-using Monetra.Application.UseCases.Custumer.Command.Request;
+using Monetra.Domain.BackOffice.Commum;
 using Monetra.Domain.BackOffice.Entities;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 using Monetra.Domain.BackOffice.Interfaces.Services;

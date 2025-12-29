@@ -1,4 +1,4 @@
-namespace Monetra.Application.Commum;
+namespace Monetra.Domain.BackOffice.Commum;
 
 public class Error(string code, string menssage)
 {

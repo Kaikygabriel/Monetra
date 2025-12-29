@@ -1,4 +1,4 @@
-namespace Monetra.Application.Commum.Abstraction;
+namespace Monetra.Domain.BackOffice.Commum.Abstraction;
 
 public class Result
 {
