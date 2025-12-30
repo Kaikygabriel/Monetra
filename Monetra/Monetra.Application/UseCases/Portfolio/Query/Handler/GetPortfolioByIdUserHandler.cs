@@ -16,7 +16,7 @@ public class GetPortfolioByIdUserHandler : HandlerBase,
     {
         var portfolios = await _unitOfWork.PortfolioRepository.GetPortfolioFromCustumer(request.Id);
         return portfolios is not null
-            ? Result<IEnumerable<Domain.BackOffice.Entities.Portfolio>>.Sucess(portfolios)
+            ? Result<IEnumerable<Domain.BackOffice.Entities.Portfolio>>.Success(portfolios)
             : Result<IEnumerable<Domain.BackOffice.Entities.Portfolio>>.Failure(new Error("Portfolio.NoExisting","Portfolio No Existing"));
     }
 }

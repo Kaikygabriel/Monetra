@@ -4,7 +4,7 @@ using Monetra.Domain.BackOffice.Entities;
 
 namespace Monetra.Infra.Data.Mapping;
 
-public class TransactionMappinh : IEntityTypeConfiguration<Transaction>
+public class TransactionMapping : IEntityTypeConfiguration<Transaction>
 {
     public void Configure(EntityTypeBuilder<Transaction> builder)
     {

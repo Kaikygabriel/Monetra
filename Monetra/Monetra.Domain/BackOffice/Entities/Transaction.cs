@@ -26,7 +26,8 @@ public class Transaction : Entity
         PortfolioId = portfolioId;
         Amount = amount;
         Type = type;
-        CreatedAt = DateTime.Now;
+        CreatedAt = DateTime.UtcNow;
+        Id = Guid.NewGuid();
     }
 
     public static class Factories

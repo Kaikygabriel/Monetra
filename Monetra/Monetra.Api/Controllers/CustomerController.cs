@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Monetra.Application.UseCases.Customer.Command.Request;
+using Monetra.Application.UseCases.Customer.Query.Request;
 
 namespace Monetra.Api.Controllers;
 
@@ -27,4 +28,12 @@ public class CustomerController : ControllerBase
         var result = await _mediator.Send(request);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
+
+    [HttpGet("Dashbord")]
+    public async Task<ActionResult> DashBord([FromQuery] GetCustomerDashbordRequest request)
+    {
+        var result = await _mediator.Send(request);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+    }
+    
 }

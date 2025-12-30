@@ -1,3 +1,4 @@
+
 namespace Monetra.Domain.BackOffice.Commum.Abstraction;
 
 public class Result
@@ -15,7 +16,7 @@ public class Result
         Error = error;
     }
 
-    public static Result Success() =>
+    public static  Result Success() =>
         new(true);
 
     public static Result Failure(Error error) =>

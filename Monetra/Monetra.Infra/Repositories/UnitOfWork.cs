@@ -1,5 +1,6 @@
 using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Customer;
+using Monetra.Domain.BackOffice.Interfaces.Repostiries.Mark;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Portifolio;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Transaction;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.User;
@@ -47,6 +48,7 @@ public class UnitOfWork : IUnitOfWork
     }
 
     public ITransactionRepository TransactionRepository { get; }
+    public IMarkRepository MarkRepository { get; }
 
     public async Task CommitAsync()
         => await _context.SaveChangesAsync();

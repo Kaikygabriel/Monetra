@@ -1,4 +1,5 @@
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Customer;
+using Monetra.Domain.BackOffice.Interfaces.Repostiries.Mark;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Portifolio;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Transaction;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.User;
@@ -11,5 +12,6 @@ public interface IUnitOfWork
     public IPortfolioRepository PortfolioRepository { get; }
     public IUserRepository UserRepository { get; }
     public ITransactionRepository TransactionRepository { get; }
+    public IMarkRepository MarkRepository { get;  }
     Task CommitAsync();
 }

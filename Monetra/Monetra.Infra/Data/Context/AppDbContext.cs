@@ -10,12 +10,14 @@ public class AppDbContext(DbContextOptions<AppDbContext>options) : DbContext(opt
     public DbSet<User>Users { get; set; }
     public DbSet<Portfolio>Portfolios { get; set; }
     public DbSet<Transaction>Transactions { get; set; }
+    public DbSet<Mark>Marks { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfiguration(new MarkMapping());
         modelBuilder.ApplyConfiguration(new CustomerMapping());
         modelBuilder.ApplyConfiguration(new PortfolioMapping());
         modelBuilder.ApplyConfiguration(new UserMapping());
-        modelBuilder.ApplyConfiguration(new TransactionMappinh());
+        modelBuilder.ApplyConfiguration(new TransactionMapping());
 
     }
 }

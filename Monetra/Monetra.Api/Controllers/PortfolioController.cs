@@ -46,4 +46,10 @@ public class PortfolioController : ControllerBase
         var result = await _mediator.Send(request);
         return result.IsSuccess ? NoContent () : BadRequest(result.Error);
     }
+    [HttpPost("ActiveOrNoPortfolio")]
+        public async Task<ActionResult> ActiveOrNoPortfolio([FromBody] ActiveOrNoVisiblePortfolioRequest request)
+        {
+            var result = await _mediator.Send(request);
+            return result.IsSuccess ? NoContent () : BadRequest(result.Error);
+        }
 }

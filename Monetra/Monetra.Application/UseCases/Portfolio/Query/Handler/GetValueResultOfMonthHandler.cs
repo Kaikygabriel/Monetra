@@ -21,8 +21,9 @@ public class GetValueResultOfMonthHandler : HandlerBase ,
         if (portfolio is null || !IdCustomerIsEquals(portfolio, request.IdCustomer))
             return Result<IEnumerable<Transaction>>.Failure(Errors.CustomerIdIsNotEqualPortfolioCustomerId);
 
-        var startOfLastMonth = DateTime.Now.AddMonths(-1);
-        return Result<IEnumerable<Transaction>>.Sucess(
+        var months = Math.Abs(request.MonthsQuantity);
+        var startOfLastMonth = DateTime.Now.AddMonths(-(months));
+        return Result<IEnumerable<Transaction>>.Success(
             GetTransactionByDateRange(startOfLastMonth, DateTime.Now,portfolio));
     }
 

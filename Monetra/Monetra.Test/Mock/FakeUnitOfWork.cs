@@ -1,5 +1,6 @@
 using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Customer;
+using Monetra.Domain.BackOffice.Interfaces.Repostiries.Mark;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Portifolio;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Transaction;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.User;
@@ -12,6 +13,7 @@ public class FakeUnitOfWork : IUnitOfWork
     public IPortfolioRepository PortfolioRepository { get; }
     public IUserRepository UserRepository { get; } = new FakeUserRepository();
     public ITransactionRepository TransactionRepository { get; }
+    public IMarkRepository MarkRepository { get; }
 
     public Task CommitAsync()
         => Task.CompletedTask;
