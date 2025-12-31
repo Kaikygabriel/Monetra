@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Monetra.Application.UseCases.Customer.Command.Request;
+using Monetra.Application.UseCases.Customer.Command.Request.AlterPassword;
 using Monetra.Application.UseCases.Customer.Query.Request;
 
 namespace Monetra.Api.Controllers;
@@ -32,8 +33,20 @@ public class CustomerController : ControllerBase
     [HttpGet("Dashbord")]
     public async Task<ActionResult> DashBord([FromQuery] GetCustomerDashbordRequest request)
     {
+        throw new Exception("ERROR SEU OTARIO");
         var result = await _mediator.Send(request);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
-    
+    [HttpPost("SendEmailForAlterPassword")]
+    public async Task<ActionResult> AlterPassword([FromBody] SendEmailForAlterPasswordRequest  request)
+    {
+        var result = await _mediator.Send(request);
+        return result.IsSuccess ? Ok() : BadRequest(result.Error);
+    }
+    [HttpPost("AlterPasswordByToken")]
+    public async Task<ActionResult> AlterPassword([FromBody] AlterPasswordCustomerRequest  request)
+    {
+        var result = await _mediator.Send(request);
+        return result.IsSuccess ? Ok() : BadRequest(result.Error);
+    }
 }

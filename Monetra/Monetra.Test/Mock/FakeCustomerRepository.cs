@@ -63,7 +63,7 @@ public class FakeCustomerRepository : ICustomerRepository
         return Task.FromResult(customer);
     }
 
-    public Task<Customer?> GetByPredicateWithUser(Expression<Func<Customer, bool>> predicate)
+    public Task<Customer?> GetByPredicateWithUserAndMark(Expression<Func<Customer, bool>> predicate)
     {
         throw new NotImplementedException();
     }

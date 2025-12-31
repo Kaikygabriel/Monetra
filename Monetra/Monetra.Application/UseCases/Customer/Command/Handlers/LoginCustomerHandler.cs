@@ -32,8 +32,8 @@ public class LoginCustomerHandler : HandlerCustomerBase,IRequestHandler<LoginCus
         if(PasswordIsValid(customer.User,request.Password))    
             return Result<CustomerAuthResponse>.Failure(Errors.PasswordInvalid);
         
-        await _mediator.Publish(new CustumerAuthNotification
-            (customer,"Bem Vindo!",MenssagesEmail.LoginCustomerMenssage(customer.User.Email.Address)));
+        // await _mediator.Publish(new CustumerAuthNotification
+        //     (customer,"Bem Vindo!",MenssagesEmail.LoginCustomerMenssage(customer.User.Email.Address)));
         var response = new CustomerAuthResponse(GenerateJwtTokenOfCustomer(customer), customer.Id);
         return Result<CustomerAuthResponse>.Success(response);
     }

@@ -1,4 +1,5 @@
 
+using System.Text.Json.Serialization;
 using Monetra.Domain.BackOffice.Commum;
 using Monetra.Domain.BackOffice.Entities.Abstraction;
 
@@ -24,6 +25,7 @@ public class Mark : Entity
     public DateTime Deadline { get;private set; }
     public DateTime CreateAt { get; init; }
     public Guid CustomerId { get; init; }
+    [JsonIgnore]
     public Customer Customer { get; init; }
 
     public static class Factories

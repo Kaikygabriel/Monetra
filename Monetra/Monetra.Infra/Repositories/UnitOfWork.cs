@@ -6,6 +6,7 @@ using Monetra.Domain.BackOffice.Interfaces.Repostiries.Transaction;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.User;
 using Monetra.Infra.Data.Context;
 using Monetra.Infra.Repositories.Customer;
+using Monetra.Infra.Repositories.Mark;
 using Monetra.Infra.Repositories.Portfolio;
 using Monetra.Infra.Repositories.User;
 
@@ -16,6 +17,7 @@ public class UnitOfWork : IUnitOfWork
     private PortfolioRepository _portfolioRepository;
     private UserRepository _userRepository;
     private CustomerRepository _customerRepository;
+    private MarkRepository _markRepository;
     private readonly AppDbContext _context;
 
     public UnitOfWork(AppDbContext context)
@@ -48,7 +50,14 @@ public class UnitOfWork : IUnitOfWork
     }
 
     public ITransactionRepository TransactionRepository { get; }
-    public IMarkRepository MarkRepository { get; }
+
+    public IMarkRepository MarkRepository
+    {
+        get
+        {
+            return  _markRepository =_markRepository?? new (_context);
+        }
+    }
 
     public async Task CommitAsync()
         => await _context.SaveChangesAsync();

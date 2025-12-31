@@ -20,17 +20,10 @@ public class CreateMarkHandler : HandlerBase,IRequestHandler<CreateMarkRequest,R
         var customer = await _unitOfWork.CustomerRepository.GetByPredicate(x => x.Id == resultMark.Value.CustomerId);
         if(customer is null)
             return Result.Failure(Errors.CustumerNoExisting);
-       
-        return await AddMarkInCustomerAndSave(customer,resultMark.Value);
-    }
-
-    private async Task<Result> AddMarkInCustomerAndSave(Domain.BackOffice.Entities.Customer customer,
-        Domain.BackOffice.Entities.Mark mark)
-    {
-        customer.AddMark(mark);
-        _unitOfWork.CustomerRepository.Update(customer);
+        customer.AddMark(resultMark.Value);
+        _unitOfWork.MarkRepository.Create(resultMark.Value);
         await _unitOfWork.CommitAsync();
         return Result.Success();
     }
-    
+  
 }

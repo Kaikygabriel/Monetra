@@ -17,9 +17,11 @@ public class CustomerRepository : Repository<Domain.BackOffice.Entities.Customer
             .FirstOrDefaultAsync(x => x.User.Email.Address == email);
     }
 
-    public async Task<Domain.BackOffice.Entities.Customer?> GetByPredicateWithUser(Expression<Func<Domain.BackOffice.Entities.Customer, bool>> predicate)
+    public async Task<Domain.BackOffice.Entities.Customer?> GetByPredicateWithUserAndMark(Expression<Func<Domain.BackOffice.Entities.Customer, bool>> predicate)
     {
-        return await  _context.Customers.AsNoTracking().Include(x=>x.User)
+        return await  _context.Customers.AsNoTracking()
+            .Include(x=>x.User)
+            .Include(x=>x.Mark)
             .FirstOrDefaultAsync(predicate);
     }
 }

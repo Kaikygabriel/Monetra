@@ -1,33 +1,22 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Monetra.Api.Extensions;
+using Monetra.Api.Logger;
 using Monetra.Infra.CrossCuting;
 using Monetra.Infra.Data.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.AddProvider(new MonetraLoggerProvider());
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(x =>
     x.UseSqlServer(builder.Configuration["ConnectionString:DefaultConnection"]
         , b => b.MigrationsAssembly("Monetra.Api")));
-builder.Services.AddDependencyInjection();
+builder.Services.AddDependencyInjection(builder.Configuration);
 builder.Services.AddSwaggerGen();
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x =>
-{
-    x.TokenValidationParameters = new TokenValidationParameters()
-    {
-        ClockSkew = TimeSpan.Zero,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]!))
-    };
-});
-builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -37,6 +26,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.MapOpenApi();
 }
+app.UseGlobalExceptionHandler();
 
 app.UseHttpsRedirection();
 

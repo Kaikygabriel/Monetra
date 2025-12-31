@@ -4,4 +4,4 @@ using Monetra.Domain.BackOffice.Commum;
 
 namespace Monetra.Application.UseCases.Customer.Query.Request;
 
-public record GetCustomerDashbordRequest(Guid CustomerId)  : IRequest<Result<CustomerDashboardDTO>>;
+public record GetCustomerDashbordRequest(Guid CustomerId)  : IRequest<Result<CustomerDashboardDto>>;
