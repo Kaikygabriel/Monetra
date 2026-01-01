@@ -1,14 +1,13 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Monetra.Api.Extensions;
 using Monetra.Api.Logger;
+using Monetra.Application.Service;
 using Monetra.Infra.CrossCuting;
 using Monetra.Infra.Data.Context;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddHostedService<ServiceRecurringTransaction>();
 builder.Logging.AddProvider(new MonetraLoggerProvider());
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();

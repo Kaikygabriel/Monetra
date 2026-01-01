@@ -24,6 +24,7 @@ public static class Ioc
 {
     public static IServiceCollection AddDependencyInjection(this IServiceCollection services,IConfiguration configuration)
     {
+      
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
         services.AddScoped<IUserRepository,UserRepository>();

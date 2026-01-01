@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Monetra.Application.UseCases.Portfolio.Commands.Request;
+using Monetra.Application.UseCases.Portfolio.Commands.Request.RecurringTransaction;
 using Monetra.Application.UseCases.Portfolio.Query.Request;
 
 namespace Monetra.Api.Controllers;
@@ -47,9 +48,15 @@ public class PortfolioController : ControllerBase
         return result.IsSuccess ? NoContent () : BadRequest(result.Error);
     }
     [HttpPost("ActiveOrNoPortfolio")]
-        public async Task<ActionResult> ActiveOrNoPortfolio([FromBody] ActiveOrNoVisiblePortfolioRequest request)
-        {
-            var result = await _mediator.Send(request);
-            return result.IsSuccess ? NoContent () : BadRequest(result.Error);
-        }
+    public async Task<ActionResult> ActiveOrNoPortfolio([FromBody] ActiveOrNoVisiblePortfolioRequest request)
+    {
+        var result = await _mediator.Send(request);
+        return result.IsSuccess ? NoContent() : BadRequest(result.Error);
+    }
+    [HttpPost("CreateRecurringTransaction")]
+    public async Task<ActionResult> CreateRecurringTransaction([FromBody] CreateRecurringTransactionRequest request)
+    {
+        var result = await _mediator.Send(request);
+        return result.IsSuccess ? NoContent() : BadRequest(result.Error);
+    }
 }

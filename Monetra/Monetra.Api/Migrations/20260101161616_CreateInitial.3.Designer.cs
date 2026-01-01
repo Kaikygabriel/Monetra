@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Monetra.Infra.Data.Context;
 
@@ -11,9 +12,11 @@ using Monetra.Infra.Data.Context;
 namespace Monetra.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260101161616_CreateInitial.3")]
+    partial class CreateInitial3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,8 +134,7 @@ namespace Monetra.Api.Migrations
 
                     b.HasIndex("MonthDayPayment");
 
-                    b.HasIndex("PortfolioId")
-                        .IsUnique();
+                    b.HasIndex("PortfolioId");
 
                     b.ToTable("RecurringTransaction", (string)null);
                 });
@@ -253,8 +255,8 @@ namespace Monetra.Api.Migrations
             modelBuilder.Entity("Monetra.Domain.BackOffice.Entities.RecurringTransaction", b =>
                 {
                     b.HasOne("Monetra.Domain.BackOffice.Entities.Portfolio", "Portfolio")
-                        .WithOne("RecurringTransaction")
-                        .HasForeignKey("Monetra.Domain.BackOffice.Entities.RecurringTransaction", "PortfolioId")
+                        .WithMany("RecurringTransactions")
+                        .HasForeignKey("PortfolioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -310,8 +312,7 @@ namespace Monetra.Api.Migrations
 
             modelBuilder.Entity("Monetra.Domain.BackOffice.Entities.Portfolio", b =>
                 {
-                    b.Navigation("RecurringTransaction")
-                        .IsRequired();
+                    b.Navigation("RecurringTransactions");
 
                     b.Navigation("Transactions");
                 });

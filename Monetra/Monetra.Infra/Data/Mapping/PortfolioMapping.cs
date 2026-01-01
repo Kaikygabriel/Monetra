@@ -35,5 +35,7 @@ public class PortfolioMapping : IEntityTypeConfiguration<Portfolio>
         });
         builder.HasMany(x => x.Transactions)
             .WithOne(x => x.Portfolio);
+        builder.HasOne(x => x.RecurringTransaction)
+            .WithOne(x => x.Portfolio);
     }
 }

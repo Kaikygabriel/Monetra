@@ -11,6 +11,8 @@ public class AppDbContext(DbContextOptions<AppDbContext>options) : DbContext(opt
     public DbSet<Portfolio>Portfolios { get; set; }
     public DbSet<Transaction>Transactions { get; set; }
     public DbSet<Mark>Marks { get; set; }
+    public DbSet<RecurringTransaction>RecurringTransactions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new MarkMapping());
@@ -18,6 +20,6 @@ public class AppDbContext(DbContextOptions<AppDbContext>options) : DbContext(opt
         modelBuilder.ApplyConfiguration(new PortfolioMapping());
         modelBuilder.ApplyConfiguration(new UserMapping());
         modelBuilder.ApplyConfiguration(new TransactionMapping());
-
+        modelBuilder.ApplyConfiguration(new RecurringTransactionMapping());
     }
 }

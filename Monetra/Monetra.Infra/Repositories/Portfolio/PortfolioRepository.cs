@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Portifolio;
 using Monetra.Infra.Data.Context;
@@ -18,6 +19,16 @@ public class PortfolioRepository: Repository<Domain.BackOffice.Entities.Portfoli
     public async Task<IEnumerable<Domain.BackOffice.Entities.Portfolio>> GetPortfolioWithTransactionFromCustumer(Guid id)
     {
         var listP = await _context.Portfolios.AsNoTracking().Where(x => x.CustomerId == id)
+            .Include(x=>x.Transactions)
+            .ToListAsync();
+        return listP;
+    }
+
+    public async Task<IEnumerable<Domain.BackOffice.Entities.Portfolio>> GetByRecussingTransactionByDay()
+    {
+        var dayCurrent = DateTime.Now.Day;
+        var listP = await _context.Portfolios
+            .Where(x => x.RecurringTransaction.MonthDayPayment == dayCurrent)
             .Include(x=>x.Transactions)
             .ToListAsync();
         return listP;

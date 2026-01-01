@@ -4,7 +4,7 @@ using Monetra.Domain.BackOffice.Commum;
 using Monetra.Domain.BackOffice.Commum.Abstraction;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 
-namespace Monetra.Application.UseCases.Portfolio.Commands.Handler;
+namespace Monetra.Application.UseCases.Portfolio.Commands.Handler.Transaction;
 
 public class AddedValuePortfolioHandler : HandlerBase, IRequestHandler<AddedValuePortfolioRequest,Result>
 {
