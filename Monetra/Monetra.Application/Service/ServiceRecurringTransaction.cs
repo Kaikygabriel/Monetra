@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Monetra.Domain.BackOffice.Interfaces.Repostiries;
+ using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 using Monetra.Domain.BackOffice.Interfaces.Services;
 
 namespace Monetra.Application.Service;
@@ -23,12 +23,11 @@ public class ServiceRecurringTransaction :
         {
             var now = DateTime.Now;
 
-            if (now.Minute == 29 && (_lastExecution == null || _lastExecution.Value.Date != now.Date))
+            if (now.Hour == 12 && (_lastExecution == null || _lastExecution.Value.Date != now.Date))
             {
                 await MakeRecurringTransactionByDayCurrent();
                 _lastExecution = now;
-            }
-
+            } 
             await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
         }
     }
@@ -43,12 +42,11 @@ public class ServiceRecurringTransaction :
 
         foreach (var port in portfolios)
         {
-            port.RemoveValue(
-                port.RecurringTransaction.Value,
-                port.RecurringTransaction.TransactionType
-            );
+            port.RemoveValue(port.RecurringTransaction.Value,port.RecurringTransaction.TransactionType);
+            unitOfWork.TransactionRepository.Create(port.Transactions.Last());
+            unitOfWork.PortfolioRepository.Update(port);
         }
-
+        
         await unitOfWork.CommitAsync();
     }
 }

@@ -29,7 +29,8 @@ public class PortfolioRepository: Repository<Domain.BackOffice.Entities.Portfoli
         var dayCurrent = DateTime.Now.Day;
         var listP = await _context.Portfolios
             .Where(x => x.RecurringTransaction.MonthDayPayment == dayCurrent)
-            .Include(x=>x.Transactions)
+            .Include(x=>x.RecurringTransaction)
+            .Include(x => x.Transactions)        
             .ToListAsync();
         return listP;
     }

@@ -1,6 +1,7 @@
 
 using System.Text.Json.Serialization;
 using Monetra.Domain.BackOffice.Commum;
+using Monetra.Domain.BackOffice.Commum.Abstraction;
 using Monetra.Domain.BackOffice.Entities.Abstraction;
 
 namespace Monetra.Domain.BackOffice.Entities;
@@ -21,12 +22,23 @@ public class Mark : Entity
         Id = Guid.NewGuid();
     }
     public string Title { get;private set; }
+    public ushort Percentage { get;private set; }
     public decimal TargetAmount { get;private set; }
     public DateTime Deadline { get;private set; }
     public DateTime CreateAt { get; init; }
     public Guid CustomerId { get; init; }
     [JsonIgnore]
     public Customer Customer { get; init; }
+
+    public Result AlterPercentage(ushort value)
+    {
+        var soma = Percentage + value;
+        if(soma > 100 || soma < 0)
+            return Result.Failure(new Error("Value.Invalid","Value is invalid"));
+        
+        Percentage += value;
+        return Result.Success();
+    }
 
     public static class Factories
     {

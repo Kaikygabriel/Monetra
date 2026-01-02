@@ -33,7 +33,6 @@ public class CustomerController : ControllerBase
     [HttpGet("Dashbord")]
     public async Task<ActionResult> DashBord([FromQuery] GetCustomerDashbordRequest request)
     {
-        throw new Exception("ERROR SEU OTARIO");
         var result = await _mediator.Send(request);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }

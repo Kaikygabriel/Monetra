@@ -10,22 +10,12 @@ public class RecurringTransactionMapping : IEntityTypeConfiguration<RecurringTra
     {
         builder.ToTable("RecurringTransaction");
         builder.HasKey(x => x.Id);
-
-        builder.Property(x => x.MonthDayPayment)
-            .HasColumnType("TINYINT")
-            .IsRequired(true);
         
-        builder.Property(x=>x.Value)
-            .HasColumnType("MONEY")
-            .IsRequired(true);
-        
-        builder.Property(x=>x.CostName)
-            .HasColumnType("NVARCHAR")
-            .HasMaxLength(120)
-            .IsRequired(true);
+        builder.Property(x => x.MonthDayPayment).HasColumnType("TINYINT").IsRequired();
+        builder.Property(x => x.Value).HasColumnType("MONEY").IsRequired();
+        builder.Property(x => x.CostName).HasColumnType("NVARCHAR").HasMaxLength(120).IsRequired();
 
         builder.HasIndex(x => x.MonthDayPayment);
-        builder
-            .HasOne(x => x.Portfolio);
+
     }
 }

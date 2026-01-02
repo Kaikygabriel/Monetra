@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Monetra.Infra.Data.Context;
 
@@ -11,9 +12,11 @@ using Monetra.Infra.Data.Context;
 namespace Monetra.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260102132756_CreateInitial.5")]
+    partial class CreateInitial5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,9 +61,6 @@ namespace Monetra.Api.Migrations
 
                     b.Property<DateTime>("Deadline")
                         .HasColumnType("DATETIME");
-
-                    b.Property<int>("Percentage")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("TargetAmount")
                         .HasPrecision(10, 2)
@@ -152,7 +152,7 @@ namespace Monetra.Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("DATETIME");
 
-                    b.Property<Guid>("PortfolioId")
+                    b.Property<Guid>("PortfolioId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Type")
@@ -160,7 +160,7 @@ namespace Monetra.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PortfolioId");
+                    b.HasIndex("PortfolioId1");
 
                     b.ToTable("Transaction", (string)null);
                 });
@@ -268,7 +268,7 @@ namespace Monetra.Api.Migrations
                 {
                     b.HasOne("Monetra.Domain.BackOffice.Entities.Portfolio", "Portfolio")
                         .WithMany("Transactions")
-                        .HasForeignKey("PortfolioId")
+                        .HasForeignKey("PortfolioId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

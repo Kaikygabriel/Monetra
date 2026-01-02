@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Monetra.Infra.Data.Context;
 
@@ -11,9 +12,11 @@ using Monetra.Infra.Data.Context;
 namespace Monetra.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260102133649_CreateInitial.6")]
+    partial class CreateInitial6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,9 +61,6 @@ namespace Monetra.Api.Migrations
 
                     b.Property<DateTime>("Deadline")
                         .HasColumnType("DATETIME");
-
-                    b.Property<int>("Percentage")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("TargetAmount")
                         .HasPrecision(10, 2)

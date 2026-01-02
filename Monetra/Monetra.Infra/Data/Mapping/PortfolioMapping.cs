@@ -34,8 +34,11 @@ public class PortfolioMapping : IEntityTypeConfiguration<Portfolio>
                 .IsRequired(true);
         });
         builder.HasMany(x => x.Transactions)
-            .WithOne(x => x.Portfolio);
+            .WithOne(x => x.Portfolio)
+            .HasForeignKey(x => x.PortfolioId);
         builder.HasOne(x => x.RecurringTransaction)
-            .WithOne(x => x.Portfolio);
+            .WithOne(x => x.Portfolio)
+            .HasForeignKey<RecurringTransaction>(x => x.PortfolioId) 
+            .OnDelete(DeleteBehavior.NoAction); 
     }
 }

@@ -1,4 +1,5 @@
 using MediatR;
+using Monetra.Application.UseCases.Mark.Command.Request;
 using Monetra.Application.UseCases.Portfolio.Commands.Request;
 using Monetra.Domain.BackOffice.Commum;
 using Monetra.Domain.BackOffice.Commum.Abstraction;
@@ -8,8 +9,10 @@ namespace Monetra.Application.UseCases.Portfolio.Commands.Handler.Transaction;
 
 public class AddedValuePortfolioHandler : HandlerBase, IRequestHandler<AddedValuePortfolioRequest,Result>
 {
-    public AddedValuePortfolioHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+    private readonly IMediator _mediator;
+    public AddedValuePortfolioHandler(IUnitOfWork unitOfWork, IMediator mediator) : base(unitOfWork)
     {
+        _mediator = mediator;
     }
 
     public async Task<Result> Handle(AddedValuePortfolioRequest request, CancellationToken cancellationToken)
@@ -23,9 +26,12 @@ public class AddedValuePortfolioHandler : HandlerBase, IRequestHandler<AddedValu
             return Result.Failure(Errors.CustomerIdIsNotEqualPortfolioCustomerId);
         
         portfolio.AddValue(request.Value,request.Type);
+
+        var result = await _mediator.Send(new AlterPercentageOfMarkRequest(request.CustomerId, request.Value));
+        if (!result.IsSuccess)
+            return result;
         
         _unitOfWork.PortfolioRepository.Update(portfolio);
-        
         await _unitOfWork.CommitAsync();
         return Result.Success();
     }

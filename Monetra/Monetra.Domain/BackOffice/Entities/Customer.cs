@@ -28,4 +28,6 @@ public class Customer : Entity
 
     public void AddMark(Mark mark)
         => Mark = mark;
+    
+    
 }
