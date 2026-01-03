@@ -11,13 +11,16 @@ public class FakeCustomerRepository : ICustomerRepository
 
     public FakeCustomerRepository()
     {
-        var user1 = new User("123456", new Email("joao@email.com"));
-        var user2 = new User("123456", new Email("maria@email.com"));
-        var user3 = new User("123456", new Email("carlos@email.com"));
+        var user1 = new User(BCrypt.Net.BCrypt.HashPassword("12345"), new Email("joao@email.com"));
+        var user2 = new User(BCrypt.Net.BCrypt.HashPassword("12345"), new Email("maria@email.com"));
+        var user3 = new User(BCrypt.Net.BCrypt.HashPassword("12345"), new Email("carlos@email.com"));
         
         _customers = new List<Customer>
         {
-            new Customer(user1, "João Silva"),
+            new Customer(user1, "João Silva")
+            {
+                Id = Guid.Parse("3f6c9b8a-4e21-4c7d-9c5b-8e2d7a4f1c92")
+            },
             new Customer(user2, "Maria Oliveira"),
             new Customer(user3, "Carlos Souza")
         };

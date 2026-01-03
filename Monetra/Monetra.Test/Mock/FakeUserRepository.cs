@@ -11,9 +11,9 @@ public class FakeUserRepository : IUserRepository
     {
         _users = new List<User>
         {
-            new User("12345", new Email("admin@monetra.com")),
-            new User("12345", new Email("user@monetra.com")),
-            new User("12345", new Email("test@monetra.com"))
+            new User(BCrypt.Net.BCrypt.HashPassword("12345"), new Email("admin@monetra.com")),
+            new User(BCrypt.Net.BCrypt.HashPassword("12345"), new Email("user@monetra.com")),
+            new User(BCrypt.Net.BCrypt.HashPassword("12345"), new Email("test@monetra.com"))
         };
     }
 

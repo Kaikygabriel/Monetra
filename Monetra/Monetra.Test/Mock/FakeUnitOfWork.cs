@@ -14,7 +14,7 @@ public class FakeUnitOfWork : IUnitOfWork
     public IPortfolioRepository PortfolioRepository { get; }
     public IUserRepository UserRepository { get; } = new FakeUserRepository();
     public ITransactionRepository TransactionRepository { get; }
-    public IMarkRepository MarkRepository { get; }
+    public IMarkRepository MarkRepository { get; } = new FakeMarkRepository();
     public IRecurringTransactionRepository RecurringTransactionRepository { get; }
 
     public Task CommitAsync()
