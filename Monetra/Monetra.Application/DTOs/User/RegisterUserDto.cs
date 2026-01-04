@@ -13,5 +13,5 @@ public class RegisterUserDto
     public string Email { get; set; }
 
     public static implicit operator Domain.BackOffice.Entities.User(RegisterUserDto model)
-        => new Domain.BackOffice.Entities.User(model.Password, new Email(model.Email));
+        => new (model.Password, new Email(model.Email));
 }

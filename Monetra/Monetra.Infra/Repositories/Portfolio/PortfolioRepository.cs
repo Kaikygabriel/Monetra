@@ -16,6 +16,18 @@ public class PortfolioRepository: Repository<Domain.BackOffice.Entities.Portfoli
         var listP = await _context.Portfolios.AsNoTracking().Where(x => x.CustomerId == id).ToListAsync();
         return listP;
     }
+
+    public async Task<IEnumerable<Domain.BackOffice.Entities.Portfolio>> GetPortfolioWithRecurringTransactionFromCustumer(Guid id)
+    {
+        var listP = await _context
+            .Portfolios
+            .Include(x=>x.RecurringTransaction)
+            .AsNoTracking()
+            .Where(x => x.CustomerId == id)
+            .ToListAsync();
+        return listP;
+    }
+
     public async Task<IEnumerable<Domain.BackOffice.Entities.Portfolio>> GetPortfolioWithTransactionFromCustumer(Guid id)
     {
         var listP = await _context.Portfolios.AsNoTracking().Where(x => x.CustomerId == id)
@@ -24,7 +36,7 @@ public class PortfolioRepository: Repository<Domain.BackOffice.Entities.Portfoli
         return listP;
     }
 
-    public async Task<IEnumerable<Domain.BackOffice.Entities.Portfolio>> GetByRecussingTransactionByDay()
+    public async Task<IEnumerable<Domain.BackOffice.Entities.Portfolio>> GetByRecussingTransactionByDayCurrent()
     {
         var dayCurrent = DateTime.Now.Day;
         var listP = await _context.Portfolios

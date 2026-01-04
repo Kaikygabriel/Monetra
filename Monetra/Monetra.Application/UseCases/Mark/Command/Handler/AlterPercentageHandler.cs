@@ -1,14 +1,18 @@
 using MediatR;
+using Monetra.Application.Service;
 using Monetra.Application.UseCases.Mark.Command.Request;
 using Monetra.Domain.BackOffice.Commum.Abstraction;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries;
+using Monetra.Domain.BackOffice.Interfaces.Services;
 
 namespace Monetra.Application.UseCases.Mark.Command.Handler;
 
 public class AlterPercentageHandler : HandlerBase, IRequestHandler<AlterPercentageOfMarkRequest,Result>
 {
-    public AlterPercentageHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+    private readonly IServiceEmail _serviceEmail;
+    public AlterPercentageHandler(IUnitOfWork unitOfWork, IServiceEmail serviceEmail) : base(unitOfWork)
     {
+        _serviceEmail = serviceEmail;
     }
 
     public async Task<Result> Handle(AlterPercentageOfMarkRequest request, CancellationToken cancellationToken)
@@ -16,29 +20,44 @@ public class AlterPercentageHandler : HandlerBase, IRequestHandler<AlterPercenta
         var mark = await _unitOfWork.MarkRepository.GetByPredicate(x => x.CustomerId == request.CustomerId);
         if (mark is null)
             return Result.Success();
+        if (mark.Percentage > 99)
+            await SendEmailCompletedMark(await _unitOfWork.CustomerRepository.GetByPredicate(x=>x.Id ==mark.CustomerId),
+                ,mark);
+        var currentMoney = GetValueCurrentInMoney(mark);
         
-        var value = request.Value;
-        var resultPercentage = CalculatePercentageByValues(request.Value, GetValueCurrent(mark));
+        var newTotalMoney = currentMoney + request.Value;
         
-        var resultUpdate = mark.AlterPercentage(resultPercentage);
+        var newPercentage = CalculateNewTotalPercentage(newTotalMoney, mark.TargetAmount);
         
-     //  _unitOfWork.MarkRepository.Update(mark);
+        var resultUpdate = mark.AlterPercentage(newPercentage);
+    
+        if (!resultUpdate.IsSuccess)
+            return resultUpdate;
+
+        _unitOfWork.MarkRepository.Update(mark);
         await _unitOfWork.CommitAsync();
-        return resultUpdate ;
-    }
-    //esta dando erro de concorrencia , ajustar ! 
-    private decimal GetValueCurrent(Domain.BackOffice.Entities.Mark mark)
-    {
-        var valuePercentage = mark.Percentage / 100;
-        var valueRemove = valuePercentage * mark.TargetAmount;
-        var valueFinal = valueRemove - mark.TargetAmount;
-        return valueFinal;
+    
+        return resultUpdate;
     }
 
-    private ushort CalculatePercentageByValues(decimal value, decimal valueMark)
+    private async Task SendEmailCompletedMark(Domain.BackOffice.Entities.Customer customer,Domain.BackOffice.Entities.Mark mark)
     {
-        var oneOperation = value * 100;
-        var result =value / valueMark;
-        return (ushort)result;
+        _serviceEmail.TrySendEmail(
+            ServiceEmail.CreateMenssageOfEmail
+                (customer,"Completed mark!","Completed you Mark :" + mark.Title));
     }
+    private decimal GetValueCurrentInMoney(Domain.BackOffice.Entities.Mark mark)
+    {
+        return (mark.Percentage / 100m) * mark.TargetAmount;
+    }
+
+    private ushort CalculateNewTotalPercentage(decimal newTotalValue, decimal targetAmount)
+    {
+        if (targetAmount <= 0) return 0;
+        
+        var result = (newTotalValue * 100) / targetAmount;
+        
+        return (ushort)Math.Round(result);
+    }
+    
 }

@@ -1,3 +1,5 @@
+using Monetra.Domain.BackOffice.Commum;
+using Monetra.Domain.BackOffice.Commum.Abstraction;
 using Monetra.Domain.BackOffice.Entities.Abstraction;
 using Monetra.Domain.BackOffice.Exception;
 using Monetra.Domain.BackOffice.ObjectValues;
@@ -12,7 +14,7 @@ public class User : Entity
     }
     public User(string password, Email email)
     {
-        if (PasswordIsValid(password))
+        if (PasswordIsInValid(password))
             throw new UserException("Password in user is invalid!");
         Password = password;
         Email = email;
@@ -21,16 +23,17 @@ public class User : Entity
 
     public Email Email { get;private set; }
     public string Password { get;private set; }
+    
 
-
-    public void UpdatePassword(string password)
+    public Result UpdatePassword(string password)
     {
-        if (PasswordIsValid(password))
-            throw new UserException("Password in user is invalid!");
+        if (PasswordIsInValid(password))
+            return Result.Failure(new Error("Password.Invalid","Password invalid!"));
         Password = password;
+        return Result.Success();
     }
     
-    private bool PasswordIsValid(string password)
+    private bool PasswordIsInValid(string password)
         => string.IsNullOrWhiteSpace(password) || password.Length <= 4;
 
 }

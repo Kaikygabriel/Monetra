@@ -38,7 +38,7 @@ public class ServiceRecurringTransaction :
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
         var portfolios =
-            await unitOfWork.PortfolioRepository.GetByRecussingTransactionByDay();
+            await unitOfWork.PortfolioRepository.GetByRecussingTransactionByDayCurrent();
 
         foreach (var port in portfolios)
         {

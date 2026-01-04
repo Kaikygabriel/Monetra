@@ -29,10 +29,12 @@ public class AddedValuePortfolioHandler : HandlerBase, IRequestHandler<AddedValu
 
         var result = await _mediator.Send(new AlterPercentageOfMarkRequest(request.CustomerId, request.Value));
         if (!result.IsSuccess)
-            return result;
+           return result;
         
+        _unitOfWork.TransactionRepository.Create(portfolio.Transactions.Last());
         _unitOfWork.PortfolioRepository.Update(portfolio);
         await _unitOfWork.CommitAsync();
+ 
         return Result.Success();
     }
 
