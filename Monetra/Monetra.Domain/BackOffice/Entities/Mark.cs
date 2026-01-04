@@ -32,11 +32,11 @@ public class Mark : Entity
 
     public Result AlterPercentage(ushort value)
     {
-        var soma = Percentage + value;
-        if(soma > 100 || soma < 0)
+        if(value > 100)
             return Result.Failure(new Error("Value.Invalid","Value is invalid"));
-        
-        Percentage += value;
+        if (value < 0)
+            value = 0;
+        Percentage = value;
         return Result.Success();
     }
 

@@ -21,11 +21,11 @@ public class AlterPercentageHandler : HandlerBase, IRequestHandler<AlterPercenta
         if (mark is null)
             return Result.Success();
         if (mark.Percentage > 99)
-            await SendEmailCompletedMark(await _unitOfWork.CustomerRepository.GetByPredicate(x=>x.Id ==mark.CustomerId),
+            await SendEmailCompletedMark(await _unitOfWork.CustomerRepository.GetByPredicate(x=>x.Id ==mark.CustomerId)
                 ,mark);
         var currentMoney = GetValueCurrentInMoney(mark);
         
-        var newTotalMoney = currentMoney + request.Value;
+        var newTotalMoney = Math.Abs(currentMoney + request.Value);
         
         var newPercentage = CalculateNewTotalPercentage(newTotalMoney, mark.TargetAmount);
         
@@ -40,12 +40,6 @@ public class AlterPercentageHandler : HandlerBase, IRequestHandler<AlterPercenta
         return resultUpdate;
     }
 
-    private async Task SendEmailCompletedMark(Domain.BackOffice.Entities.Customer customer,Domain.BackOffice.Entities.Mark mark)
-    {
-        _serviceEmail.TrySendEmail(
-            ServiceEmail.CreateMenssageOfEmail
-                (customer,"Completed mark!","Completed you Mark :" + mark.Title));
-    }
     private decimal GetValueCurrentInMoney(Domain.BackOffice.Entities.Mark mark)
     {
         return (mark.Percentage / 100m) * mark.TargetAmount;
@@ -60,4 +54,10 @@ public class AlterPercentageHandler : HandlerBase, IRequestHandler<AlterPercenta
         return (ushort)Math.Round(result);
     }
     
+    private async Task SendEmailCompletedMark(Domain.BackOffice.Entities.Customer customer,Domain.BackOffice.Entities.Mark mark)
+    {
+        _serviceEmail.TrySendEmail(
+            ServiceEmail.CreateMenssageOfEmail
+                (customer,"Completed mark!","Completed you Mark :" + mark.Title));
+    }
 }

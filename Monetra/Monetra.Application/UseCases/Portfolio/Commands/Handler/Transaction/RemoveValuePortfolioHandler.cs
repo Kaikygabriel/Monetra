@@ -1,4 +1,5 @@
 using MediatR;
+using Monetra.Application.UseCases.Mark.Command.Request;
 using Monetra.Application.UseCases.Portfolio.Commands.Request;
 using Monetra.Domain.BackOffice.Commum;
 using Monetra.Domain.BackOffice.Commum.Abstraction;
@@ -8,8 +9,10 @@ namespace Monetra.Application.UseCases.Portfolio.Commands.Handler.Transaction;
 
 public class RemoveValuePortfolioHandler : HandlerBase,IRequestHandler<RemoveValuePortfolioRequest,Result>
 {
-    public RemoveValuePortfolioHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+    private readonly IMediator _mediator;
+    public RemoveValuePortfolioHandler(IUnitOfWork unitOfWork, IMediator mediator) : base(unitOfWork)
     {
+        _mediator = mediator;
     }
 
     public async Task<Result> Handle(RemoveValuePortfolioRequest request, CancellationToken cancellationToken)
@@ -24,6 +27,11 @@ public class RemoveValuePortfolioHandler : HandlerBase,IRequestHandler<RemoveVal
         
         portfolio.RemoveValue(request.Value,request.Type);
         
+        var resultMarkPercentage = await _mediator.Send(new AlterPercentageOfMarkRequest(request.CustomerId,-request.Value));
+        if (!resultMarkPercentage.IsSuccess)
+            return resultMarkPercentage;
+        
+        _unitOfWork.TransactionRepository.Create(portfolio.Transactions.Last());
         _unitOfWork.PortfolioRepository.Update(portfolio);
         
         await _unitOfWork.CommitAsync();
