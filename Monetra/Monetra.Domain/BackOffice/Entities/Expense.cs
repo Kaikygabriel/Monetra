@@ -1,0 +1,46 @@
+using Monetra.Domain.BackOffice.Commum;
+using Monetra.Domain.BackOffice.Entities.Abstraction;
+
+namespace Monetra.Domain.BackOffice.Entities;
+
+public class Expense : Entity
+{
+    protected Expense()
+    {
+        
+    }
+    private Expense(string descriptions)
+    {
+        Description = descriptions;
+    }
+
+    public Guid CustomerId { get;  }
+    public Customer Customer { get;}
+
+    
+    public List<RecurringTransaction> RecurringTransactions { get; private set; } = new();
+    public string Description { get; private set; }
+    
+    public Guid? PortfolioId { get;private set; }
+    public Portfolio? Portfolio { get;private set; }
+    
+
+    public static class Factories
+    {
+        public static Result<Expense> Create(string description)
+        {
+            if (string.IsNullOrWhiteSpace(description) || description.Length < 2)
+                return Result<Expense>.Failure(new("Expense.InvalidParameters", "Expense InvalidParameters"));
+            return Result<Expense>.Success(new(description));
+        }
+    }
+    public void SetPortfolio(Portfolio portfolio)
+    {
+        Portfolio = portfolio;
+        PortfolioId = portfolio.Id;
+    } 
+
+    public void AddRecurringTransaction(RecurringTransaction transaction)
+        => RecurringTransactions.Add(transaction);
+
+}

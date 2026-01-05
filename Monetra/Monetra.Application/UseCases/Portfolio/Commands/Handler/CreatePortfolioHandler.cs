@@ -24,8 +24,10 @@ public class CreatePortfolioHandler: HandlerBase, IRequestHandler<CreatePortfoli
             return Result.Failure(Errors.CustumerNoExisting);
 
         Domain.BackOffice.Entities.Portfolio portfolio = request.Model;
-        portfolio.CustomerId = customerExists.Id; 
-            
+        portfolio.CustomerId = customerExists.Id;
+        customerExists.AddPortifolio(portfolio);
+        
+      //  _unitOfWork.CustomerRepository.Update(customerExists);
         _unitOfWork.PortfolioRepository.Create(portfolio);
         await _unitOfWork.CommitAsync();
 

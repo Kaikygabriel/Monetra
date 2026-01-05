@@ -1,4 +1,5 @@
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Customer;
+using Monetra.Domain.BackOffice.Interfaces.Repostiries.Expense;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Mark;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Portifolio;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.RecurringTransaction;
@@ -15,5 +16,7 @@ public interface IUnitOfWork
     public ITransactionRepository TransactionRepository { get; }
     public IMarkRepository MarkRepository { get;  }
     public IRecurringTransactionRepository RecurringTransactionRepository { get;  }
+    public IExpenseRepository ExpenseRepository { get; }
+
     Task CommitAsync();
 }

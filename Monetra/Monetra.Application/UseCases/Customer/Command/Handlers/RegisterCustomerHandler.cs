@@ -4,6 +4,7 @@ using Monetra.Application.UseCases.Customer.Command.Request;
 using Monetra.Application.UseCases.Customer.Command.Response;
 using Monetra.Application.UseCases.Customer.Notification.Request;
 using Monetra.Domain.BackOffice.Commum;
+using Monetra.Domain.BackOffice.Entities;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 using Monetra.Domain.BackOffice.Interfaces.Services;
 
@@ -30,10 +31,15 @@ public class RegisterCustomerHandler:HandlerCustomerBase, IRequestHandler<Regist
         
         if (await _serviceUser.UserExisting(request.Model.UserDto))
             return Result<CustomerAuthResponse>.Failure(Errors.InvalidEmail);
+
+        var resultExpenseCreate = Expense.Factories.Create(request.Model.DescriptionExpense);
+        if (!resultExpenseCreate.IsSuccess)
+            return Result<CustomerAuthResponse>.Failure(resultExpenseCreate.Error);
         
         Domain.BackOffice.Entities.Customer customer = request.Model;
+        customer.AddExpense(resultExpenseCreate.Value);
         _serviceUser.AddHashPassword(customer.User);
-        
+
         _unitOfWork.CustomerRepository.Create(customer);
         await _unitOfWork.CommitAsync();
 

@@ -22,9 +22,10 @@ public class GetValueResultOfMonthHandler : HandlerBase ,
             return Result<IEnumerable<Transaction>>.Failure(Errors.CustomerIdIsNotEqualPortfolioCustomerId);
 
         var months = Math.Abs(request.MonthsQuantity);
-        var startOfLastMonth = DateTime.Now.AddMonths(-(months));
-        return Result<IEnumerable<Transaction>>.Success(
-            GetTransactionByDateRange(startOfLastMonth, DateTime.Now,portfolio));
+        var startOfLastMonth = DateTime.Now.AddMonths(-months);
+
+        var transactions = GetTransactionByDateRange(startOfLastMonth, DateTime.Now, portfolio); 
+        return Result<IEnumerable<Transaction>>.Success(transactions);
     }
 
     private bool IdCustomerIsEquals(Domain.BackOffice.Entities.Portfolio port , Guid idCustomer)
@@ -35,6 +36,6 @@ public class GetValueResultOfMonthHandler : HandlerBase ,
     {
         return port
             .Transactions
-            .Where(t => t.CreatedAt >= dateStart && t.CreatedAt <= dateFinal);
+            .Where(t => t.CreatedAt >= dateStart );
     }
 }

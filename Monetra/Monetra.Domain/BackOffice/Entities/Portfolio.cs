@@ -11,7 +11,7 @@ public class Portfolio : Entity
         
     }
     
-    public Portfolio(Investment fixedIncome, Investment variableIncome, string title)
+    public Portfolio(Investment fixedIncome, Investment variableIncome,Investment reservation, string title)
     {
         if (string.IsNullOrEmpty(title) || title.Length < 3)
             throw new System.Exception("Title in portfolio is invalid");
@@ -21,18 +21,20 @@ public class Portfolio : Entity
         FixedIncome = fixedIncome;
         VariableIncome = variableIncome;
         Id = Guid.NewGuid();
+        Reservation = reservation;
     }
 
     public bool Visible { get;private set; }
     public string Title { get;private set; }
     public DateTime CreateDate { get;private set; }
+    public Investment Reservation { get;private set; }
     public Investment FixedIncome  { get;private set; }
     public Investment VariableIncome  { get;private set; }
     public Customer Customer { get;private set; }
-    public Guid CustomerId { get; set; }
+    public Guid CustomerId { get;set; }
     public List<Transaction> Transactions { get; private set; } = new();
-    
-    public RecurringTransaction RecurringTransaction { get; private set; } 
+    public Expense? Exepense  { get;private set; }
+    public Guid? ExpenseId { get;private set; }
     public decimal TotalPrice()
         => FixedIncome.Value + VariableIncome.Value;
 
@@ -40,12 +42,6 @@ public class Portfolio : Entity
         => Visible = false;
     public void ConvertToVisible()
         => Visible = true;
-
-    public void AddCustomer(Customer customer)
-    {
-        if (Customer is null)
-            Customer = customer;
-    }
 
     private void ApplyTransaction(decimal signedValue, TransactionType type)
     {
@@ -70,7 +66,4 @@ public class Portfolio : Entity
         if (value <= 0) throw new System.Exception("Invalid value");
         ApplyTransaction(-value, type);
     }
-
-    public void AddRecurringTransaction(RecurringTransaction transaction)
-        =>  RecurringTransaction= transaction;
 }

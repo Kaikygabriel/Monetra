@@ -23,7 +23,7 @@ public class ServiceRecurringTransaction :
         {
             var now = DateTime.Now;
 
-            if (now.Hour == 12 && (_lastExecution == null || _lastExecution.Value.Date != now.Date))
+            if (now.Minute == 47 && (_lastExecution == null || _lastExecution.Value.Date != now.Date))
             {
                 await MakeRecurringTransactionByDayCurrent();
                 _lastExecution = now;
@@ -32,19 +32,42 @@ public class ServiceRecurringTransaction :
         }
     }
 
+    // public async Task MakeRecurringTransactionByDayCurrent()
+    // {
+    //     using var scope = _scopeFactory.CreateScope();
+    //     var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+    //
+    //     var portfolios =
+    //         await unitOfWork.PortfolioRepository.GetByRecussingTransactionByDayCurrent();
+    //
+    //     foreach (var port in portfolios)
+    //     {
+    //         port.RemoveValue(port.RecurringTransaction.Value,port.RecurringTransaction.TransactionType);
+    //         unitOfWork.TransactionRepository.Create(port.Transactions.Last());
+    //         unitOfWork.PortfolioRepository.Update(port);
+    //     }
+    //     
+    //     await unitOfWork.CommitAsync();
+    // }
     public async Task MakeRecurringTransactionByDayCurrent()
     {
         using var scope = _scopeFactory.CreateScope();
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-        var portfolios =
-            await unitOfWork.PortfolioRepository.GetByRecussingTransactionByDayCurrent();
+        var transactions  =
+            await unitOfWork.RecurringTransactionRepository.GetPendingTransactionsByCurrentDay();
 
-        foreach (var port in portfolios)
+        foreach(var transaction in transactions)
         {
-            port.RemoveValue(port.RecurringTransaction.Value,port.RecurringTransaction.TransactionType);
-            unitOfWork.TransactionRepository.Create(port.Transactions.Last());
-            unitOfWork.PortfolioRepository.Update(port);
+            var expense = await unitOfWork.ExpenseRepository.GetWithPortfolioByPredicate(x => x.Id == transaction.ExpenseId);
+            if (expense.Portfolio is not null)
+            {
+                expense.Portfolio.RemoveValue(transaction.Value,
+                    transaction.TransactionType);
+                unitOfWork.TransactionRepository.Create(expense.Portfolio.Transactions.Last());
+                unitOfWork.PortfolioRepository.Update(expense.Portfolio);
+                await unitOfWork.CommitAsync();
+            }
         }
         
         await unitOfWork.CommitAsync();

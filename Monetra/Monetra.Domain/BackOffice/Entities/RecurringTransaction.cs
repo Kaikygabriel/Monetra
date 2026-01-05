@@ -25,9 +25,9 @@ public class RecurringTransaction  : Entity
     public decimal Value { get;init; }
     public int MonthDayPayment { get;init; }
     [JsonIgnore]
-    public Portfolio Portfolio { get; private set;}
+    public Expense Expense{ get; private set;}
 
-    public Guid PortfolioId { get; set; }
+    public Guid ExpenseId { get; set; }
 
     public static class Factories
     {

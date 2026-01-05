@@ -4,7 +4,7 @@ namespace Monetra.Domain.BackOffice.Commum;
 
 public class Result<T> : Result
 {   
-    public T Value { get; }
+    public T Value { get; set; }
 
     private Result(Error error) : base(error)
     {

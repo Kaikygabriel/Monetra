@@ -17,33 +17,13 @@ public class PortfolioRepository: Repository<Domain.BackOffice.Entities.Portfoli
         return listP;
     }
 
-    public async Task<IEnumerable<Domain.BackOffice.Entities.Portfolio>> GetPortfolioWithRecurringTransactionFromCustumer(Guid id)
-    {
-        var listP = await _context
-            .Portfolios
-            .Include(x=>x.RecurringTransaction)
-            .AsNoTracking()
-            .Where(x => x.CustomerId == id)
-            .ToListAsync();
-        return listP;
-    }
 
     public async Task<IEnumerable<Domain.BackOffice.Entities.Portfolio>> GetPortfolioWithTransactionFromCustumer(Guid id)
     {
-        var listP = await _context.Portfolios.AsNoTracking().Where(x => x.CustomerId == id)
+        var listP = await _context.Portfolios.Where(x => x.CustomerId == id)
             .Include(x=>x.Transactions)
             .ToListAsync();
         return listP;
     }
 
-    public async Task<IEnumerable<Domain.BackOffice.Entities.Portfolio>> GetByRecussingTransactionByDayCurrent()
-    {
-        var dayCurrent = DateTime.Now.Day;
-        var listP = await _context.Portfolios
-            .Where(x => x.RecurringTransaction.MonthDayPayment == dayCurrent)
-            .Include(x=>x.RecurringTransaction)
-            .Include(x => x.Transactions)        
-            .ToListAsync();
-        return listP;
-    }
 }

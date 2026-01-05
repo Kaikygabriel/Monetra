@@ -11,7 +11,11 @@ public class RegisterCustomerDTO
     public string Name { get; set; }
     [Required]
     public User.RegisterUserDto UserDto { get; set; }
+    [Required] 
+    public decimal Salary { get; set; }
+    [Required] 
+    public string DescriptionExpense { get; set; }
 
     public static implicit operator Customer(RegisterCustomerDTO model)
-        => new(model.UserDto,model.Name);
+        => new(model.UserDto,model.Name,model.Salary);
 }

@@ -13,9 +13,10 @@ public class CreateRecurringTransactionDto
     [Required]
     public int MonthDayPayment { get; set; }
     [Required]
-    public Guid IdPortfolio { get; set; }
+    public Guid? IdPortfolio { get; set; }
     [Required]
     public Guid IdCustomerId { get; set; }
+
     [Required] 
     public TransactionType TransactionType { get; set; }
 

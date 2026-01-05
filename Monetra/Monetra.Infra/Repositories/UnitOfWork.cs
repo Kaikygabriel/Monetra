@@ -1,5 +1,6 @@
 using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Customer;
+using Monetra.Domain.BackOffice.Interfaces.Repostiries.Expense;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Mark;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Portifolio;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.RecurringTransaction;
@@ -7,6 +8,7 @@ using Monetra.Domain.BackOffice.Interfaces.Repostiries.Transaction;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.User;
 using Monetra.Infra.Data.Context;
 using Monetra.Infra.Repositories.Customer;
+using Monetra.Infra.Repositories.Extense;
 using Monetra.Infra.Repositories.Mark;
 using Monetra.Infra.Repositories.Portfolio;
 using Monetra.Infra.Repositories.RecurringTransaction;
@@ -23,6 +25,8 @@ public class UnitOfWork : IUnitOfWork
     private UserRepository _userRepository;
     private CustomerRepository _customerRepository;
     private MarkRepository _markRepository;
+    private ExtenseRepository _extenseRepository;
+    
     private readonly AppDbContext _context;
 
     public UnitOfWork(AppDbContext context)
@@ -75,6 +79,14 @@ public class UnitOfWork : IUnitOfWork
         get
         {
             return _recurringTransactionRepository = _recurringTransactionRepository ?? new(_context);
+        }
+    }
+
+    public IExpenseRepository ExpenseRepository
+    {
+        get
+        {
+            return _extenseRepository = _extenseRepository ?? new(_context);
         }
     }
 

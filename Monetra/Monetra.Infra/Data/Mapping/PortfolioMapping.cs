@@ -25,20 +25,25 @@ public class PortfolioMapping : IEntityTypeConfiguration<Portfolio>
         {
             x.Property(x => x.Value)
                 .HasColumnType("MONEY")
+                .HasColumnName("FixedIncome")
                 .IsRequired(true);
         });
         builder.OwnsOne(x => x.VariableIncome, x =>
         {
             x.Property(x => x.Value)
                 .HasColumnType("MONEY")
+                .HasColumnName("VariableIncome")
+                .IsRequired(true);
+        });
+        builder.OwnsOne(x => x.Reservation, x =>
+        {
+            x.Property(x => x.Value)
+                .HasColumnType("MONEY")
+                .HasColumnName("Reservation")
                 .IsRequired(true);
         });
         builder.HasMany(x => x.Transactions)
             .WithOne(x => x.Portfolio)
             .HasForeignKey(x => x.PortfolioId);
-        builder.HasOne(x => x.RecurringTransaction)
-            .WithOne(x => x.Portfolio)
-            .HasForeignKey<RecurringTransaction>(x => x.PortfolioId) 
-            .OnDelete(DeleteBehavior.NoAction); 
     }
 }

@@ -8,6 +8,8 @@ public class AppDbContext(DbContextOptions<AppDbContext>options) : DbContext(opt
 {
     public DbSet<Customer>Customers { get; set; }
     public DbSet<User>Users { get; set; }
+    public DbSet<Expense>Expenses{ get; set; }
+
     public DbSet<Portfolio>Portfolios { get; set; }
     public DbSet<Transaction>Transactions { get; set; }
     public DbSet<Mark>Marks { get; set; }
@@ -15,6 +17,8 @@ public class AppDbContext(DbContextOptions<AppDbContext>options) : DbContext(opt
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfiguration(new ExpenseMapping());
+
         modelBuilder.ApplyConfiguration(new MarkMapping());
         modelBuilder.ApplyConfiguration(new CustomerMapping());
         modelBuilder.ApplyConfiguration(new PortfolioMapping());

@@ -17,12 +17,12 @@ public class FakeCustomerRepository : ICustomerRepository
         
         _customers = new List<Customer>
         {
-            new Customer(user1, "João Silva")
+            new Customer(user1, "João Silva",0)
             {
                 Id = Guid.Parse("3f6c9b8a-4e21-4c7d-9c5b-8e2d7a4f1c92")
             },
-            new Customer(user2, "Maria Oliveira"),
-            new Customer(user3, "Carlos Souza")
+            new Customer(user2, "Maria Carvalho",0),
+            new Customer(user3, "Carlos Souza",0)
         };
     }
 
@@ -66,7 +66,7 @@ public class FakeCustomerRepository : ICustomerRepository
         return Task.FromResult(customer);
     }
 
-    public Task<Customer?> GetByPredicateWithUserAndMark(Expression<Func<Customer, bool>> predicate)
+    public Task<Customer?> GetByPredicateWithUserAndMarkAndExpense(Expression<Func<Customer, bool>> predicate)
     {
         throw new NotImplementedException();
     }

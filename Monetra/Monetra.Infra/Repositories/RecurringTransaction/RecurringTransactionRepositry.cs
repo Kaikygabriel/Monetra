@@ -11,10 +11,12 @@ public class RecurringTransactionRepositry : Repository<Domain.BackOffice.Entiti
     {
     }
 
-    public async Task<IEnumerable<Domain.BackOffice.Entities.RecurringTransaction>> GetPendingTransactions()
+    public async Task<IEnumerable<Domain.BackOffice.Entities.RecurringTransaction>> GetPendingTransactionsByCurrentDay()
     {
         var dayCurrent = DateTime.Now.Day;
-        return await _context.RecurringTransactions.Where(x => x.MonthDayPayment == dayCurrent)
+        return await _context
+            .RecurringTransactions
+            .Where(x => x.MonthDayPayment == dayCurrent)
             .ToListAsync();
     }
 }

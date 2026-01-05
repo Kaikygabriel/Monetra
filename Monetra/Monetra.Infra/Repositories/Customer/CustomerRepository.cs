@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Monetra.Domain.BackOffice.Entities;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries.Customer;
 using Monetra.Infra.Data.Context;
 
@@ -17,11 +18,12 @@ public class CustomerRepository : Repository<Domain.BackOffice.Entities.Customer
             .FirstOrDefaultAsync(x => x.User.Email.Address == email);
     }
 
-    public async Task<Domain.BackOffice.Entities.Customer?> GetByPredicateWithUserAndMark(Expression<Func<Domain.BackOffice.Entities.Customer, bool>> predicate)
+    public async Task<Domain.BackOffice.Entities.Customer?> GetByPredicateWithUserAndMarkAndExpense(Expression<Func<Domain.BackOffice.Entities.Customer, bool>> predicate)
     {
         return await  _context.Customers.AsNoTracking()
             .Include(x=>x.User)
             .Include(x=>x.Mark)
+            .Include(x=>x.Expense)
             .FirstOrDefaultAsync(predicate);
     }
 }

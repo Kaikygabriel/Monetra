@@ -20,5 +20,9 @@ public class CustomerMapping : IEntityTypeConfiguration<Customer>
         builder.HasMany(x => x.Portfolios)
             .WithOne(x=>x.Customer);
         builder.HasOne(x => x.Mark);
+        
+        builder.HasOne(x => x.Expense)
+            .WithOne(x => x.Customer)
+            .HasForeignKey<Expense>(x=>x.CustomerId);
     }
 }
