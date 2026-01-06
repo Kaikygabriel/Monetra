@@ -12,6 +12,14 @@ public class ExtenseRepository : Repository<Expense>,IExpenseRepository
     {
     }
 
+    public async Task<Expense> GetWithRecurringTransaction(Expression<Func<Expense, bool>> predicate)
+    {
+        return await _context
+            .Expenses
+            .Include(x => x.RecurringTransactions)
+            .FirstOrDefaultAsync(predicate);
+    }
+
     public async Task<Expense> GetWithPortfolioByPredicate(Expression<Func<Expense, bool>> predicate)
     {
         return await _context

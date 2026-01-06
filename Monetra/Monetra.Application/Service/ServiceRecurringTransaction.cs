@@ -31,24 +31,7 @@ public class ServiceRecurringTransaction :
             await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
         }
     }
-
-    // public async Task MakeRecurringTransactionByDayCurrent()
-    // {
-    //     using var scope = _scopeFactory.CreateScope();
-    //     var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-    //
-    //     var portfolios =
-    //         await unitOfWork.PortfolioRepository.GetByRecussingTransactionByDayCurrent();
-    //
-    //     foreach (var port in portfolios)
-    //     {
-    //         port.RemoveValue(port.RecurringTransaction.Value,port.RecurringTransaction.TransactionType);
-    //         unitOfWork.TransactionRepository.Create(port.Transactions.Last());
-    //         unitOfWork.PortfolioRepository.Update(port);
-    //     }
-    //     
-    //     await unitOfWork.CommitAsync();
-    // }
+    
     public async Task MakeRecurringTransactionByDayCurrent()
     {
         using var scope = _scopeFactory.CreateScope();

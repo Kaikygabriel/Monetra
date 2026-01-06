@@ -18,9 +18,11 @@ public class GetCustomerDashbordHandler : HandlerBase,
         var customer = await _unitOfWork.CustomerRepository.GetByPredicateWithUserAndMarkAndExpense(x => x.Id == request.CustomerId);
         if (customer is null)
             return Result<CustomerDashboardDto>.Failure(Errors.CustumerNoExisting);
-        var portfolios = await _unitOfWork.PortfolioRepository.GetPortfolioFromCustumer(customer.Id);
-
-        var result = new CustomerDashboardDto(customer.Name, customer.User.Email.Address, customer.Mark, portfolios);
+        var portfolios = await _unitOfWork.PortfolioRepository.GetPortfolioWithTransactionFromCustumer(customer.Id);
+        var expense = await _unitOfWork.ExpenseRepository.GetWithRecurringTransaction(x=>x.CustomerId == customer.Id);
+        customer.FinancialHealth.Recalculate(customer,expense,portfolios);
+        var result = new CustomerDashboardDto
+            (customer.Name, customer.User.Email.Address, customer.Mark, portfolios,customer.FinancialHealth.Percentage);
         
         return Result<CustomerDashboardDto>.Success(result);
     }

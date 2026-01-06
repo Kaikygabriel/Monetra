@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Monetra.Domain.BackOffice.Commum;
 using Monetra.Domain.BackOffice.Entities.Abstraction;
 
@@ -14,14 +15,17 @@ public class Expense : Entity
         Description = descriptions;
     }
 
+    [JsonIgnore]
     public Guid CustomerId { get;  }
+    [JsonIgnore]
     public Customer Customer { get;}
 
     
     public List<RecurringTransaction> RecurringTransactions { get; private set; } = new();
     public string Description { get; private set; }
-    
+    [JsonIgnore]
     public Guid? PortfolioId { get;private set; }
+    [JsonIgnore]
     public Portfolio? Portfolio { get;private set; }
     
 

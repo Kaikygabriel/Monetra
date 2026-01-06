@@ -15,6 +15,7 @@ public class Customer : Entity
         Name = name;
         Id = Guid.NewGuid();
         Salary = salary;
+        FinancialHealth = new ();
     }
 
     public string Name { get;private set; }
@@ -22,6 +23,7 @@ public class Customer : Entity
     public Mark Mark { get;private set; }
     public decimal Salary { get;private set; }
     public Expense Expense { get;private set; }
+    public FinancialHealth FinancialHealth { get;private set; }
     public List<Portfolio> Portfolios { get; private set; } = new();
 
     public void AddPortifolio(Portfolio port)

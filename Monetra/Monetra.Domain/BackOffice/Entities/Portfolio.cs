@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Monetra.Domain.BackOffice.Entities.Abstraction;
 using Monetra.Domain.BackOffice.Enum;
 using Monetra.Domain.BackOffice.ObjectValues;
@@ -33,6 +34,7 @@ public class Portfolio : Entity
     public Customer Customer { get;private set; }
     public Guid CustomerId { get;set; }
     public List<Transaction> Transactions { get; private set; } = new();
+    [JsonIgnore]
     public Expense? Exepense  { get;private set; }
     public Guid? ExpenseId { get;private set; }
     public decimal TotalPrice()

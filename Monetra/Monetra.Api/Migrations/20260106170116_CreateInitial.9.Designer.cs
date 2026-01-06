@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Monetra.Infra.Data.Context;
 
@@ -11,9 +12,11 @@ using Monetra.Infra.Data.Context;
 namespace Monetra.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260106170116_CreateInitial.9")]
+    partial class CreateInitial9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,8 +239,7 @@ namespace Monetra.Api.Migrations
                         .WithOne("Expense")
                         .HasForeignKey("Monetra.Domain.BackOffice.Entities.Expense", "CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("Fk_Expense_Customer");
+                        .IsRequired();
 
                     b.Navigation("Customer");
                 });
@@ -248,8 +250,7 @@ namespace Monetra.Api.Migrations
                         .WithOne("Mark")
                         .HasForeignKey("Monetra.Domain.BackOffice.Entities.Mark", "CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("Fk_Mark_Customer");
+                        .IsRequired();
 
                     b.Navigation("Customer");
                 });
@@ -260,8 +261,7 @@ namespace Monetra.Api.Migrations
                         .WithMany("Portfolios")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("Fk_Portfolio_Customer");
+                        .IsRequired();
 
                     b.HasOne("Monetra.Domain.BackOffice.Entities.Expense", "Exepense")
                         .WithOne("Portfolio")
