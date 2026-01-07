@@ -35,19 +35,19 @@ public class PortfolioController : ControllerBase
         var result = await _mediator.Send(request);
         return result.IsSuccess ? Created() : BadRequest(result.Error);
     }
-    [HttpPost("AddValue")]
+    [HttpPut("AddValue")]
     public async Task<ActionResult> AddValue([FromBody] AddedValuePortfolioRequest request)
     {
         var result = await _mediator.Send(request);
         return result.IsSuccess ? NoContent() : BadRequest(result.Error);
     }
-    [HttpPost("RemoveValue")]
+    [HttpPut("RemoveValue")]
     public async Task<ActionResult> RemoveValue([FromBody] RemoveValuePortfolioRequest request)
     {
         var result = await _mediator.Send(request);
         return result.IsSuccess ? NoContent () : BadRequest(result.Error);
     }
-    [HttpPost("ActiveOrNoPortfolio")]
+    [HttpPut("ActiveOrNoPortfolio")]
     public async Task<ActionResult> ActiveOrNoPortfolio([FromBody] ActiveOrNoVisiblePortfolioRequest request)
     {
         var result = await _mediator.Send(request);
@@ -58,5 +58,11 @@ public class PortfolioController : ControllerBase
     {
         var result = await _mediator.Send(request);
         return result.IsSuccess ? NoContent() : BadRequest(result.Error);
+    }
+    [HttpDelete]
+    public async Task<ActionResult> Delete([FromQuery]DeletePortfolioRequest request)
+    {
+        var result = await _mediator.Send(request);
+        return result.IsSuccess ? Ok() : BadRequest(result.Error);
     }
 }

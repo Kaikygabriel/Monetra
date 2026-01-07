@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+using Monetra.Domain.BackOffice.Commum;
+using Monetra.Domain.BackOffice.Commum.Abstraction;
 using Monetra.Domain.BackOffice.Entities.Abstraction;
 using Monetra.Domain.BackOffice.Enum;
 using Monetra.Domain.BackOffice.ObjectValues;
@@ -12,7 +14,7 @@ public class Portfolio : Entity
         
     }
     
-    public Portfolio(Investment fixedIncome, Investment variableIncome,Investment reservation, string title)
+    private Portfolio(Investment fixedIncome, Investment variableIncome,Investment reservation, string title)
     {
         if (string.IsNullOrEmpty(title) || title.Length < 3)
             throw new System.Exception("Title in portfolio is invalid");
@@ -40,6 +42,17 @@ public class Portfolio : Entity
     public decimal TotalPrice()
         => FixedIncome.Value + VariableIncome.Value;
 
+    public static class Factories
+    {
+        public static Result<Portfolio> Create(Investment fixedIncome, Investment variableIncome,
+            Investment reservation, string title)
+        {
+            if (string.IsNullOrEmpty(title) || title.Length < 3)
+                return Result<Portfolio>.Failure(new("Title.Invalid", "Title invalid!"));
+            return Result<Portfolio>.Success(new (fixedIncome,variableIncome,reservation,title));
+        }
+    } 
+
     public void ConvertToNoVisible()
         => Visible = false;
     public void ConvertToVisible()
@@ -49,23 +62,29 @@ public class Portfolio : Entity
     {
         if (type == TransactionType.FixedIncome)
             FixedIncome.AddValue(signedValue);
-        else
+        else if(type == TransactionType.VariableIncome)
             VariableIncome.AddValue(signedValue);
-
+        else
+            Reservation.AddValue(signedValue);
+        
         Transactions.Add(
             Transaction.Factories.Create(Id, signedValue, type)
         );
     }
 
-    public void AddValue(decimal value, TransactionType type)
+    public Result AddValue(decimal value, TransactionType type)
     {
-        if (value <= 0) throw new System.Exception("Invalid value");
+        if (value <= 0)
+            return Result.Failure(new("Value.Invalid","Value invalid for added!"));
         ApplyTransaction(value, type);
+        return Result.Success();
     }
 
-    public void RemoveValue(decimal value, TransactionType type)
+    public Result RemoveValue(decimal value, TransactionType type)
     {
-        if (value <= 0) throw new System.Exception("Invalid value");
+        if (value <= 0) 
+            return Result.Failure(new("Value.Invalid","Value invalid for remove!"));
         ApplyTransaction(-value, type);
+        return Result.Success();
     }
 }

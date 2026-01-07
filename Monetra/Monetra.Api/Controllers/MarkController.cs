@@ -21,4 +21,10 @@ public class MarkController : ControllerBase
         var result = await _mediator.Send(request);
         return result.IsSuccess ? Created() : BadRequest(result.Error);
     }
+    [HttpDelete]
+    public async Task<ActionResult> Delete([FromQuery]DeleteMarkRequest request)
+    {
+        var result = await _mediator.Send(request);
+        return result.IsSuccess ? Created() : BadRequest(result.Error);
+    }
 }

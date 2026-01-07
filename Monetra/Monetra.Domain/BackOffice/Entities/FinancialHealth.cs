@@ -28,7 +28,7 @@ public class FinancialHealth  : Entity
         Percentage = (int)(
             liquidity * 0.30m +
             commitment * 0.25m +
-            regularity * 0.35m
+            regularity * 0.30m
         );
     }
     private int CalculateLiquidityScore(decimal totalValue,decimal recurringTransactions)

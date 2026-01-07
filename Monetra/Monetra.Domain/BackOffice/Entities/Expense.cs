@@ -20,7 +20,7 @@ public class Expense : Entity
     [JsonIgnore]
     public Customer Customer { get;}
 
-    
+    public decimal Value { get; set; }
     public List<RecurringTransaction> RecurringTransactions { get; private set; } = new();
     public string Description { get; private set; }
     [JsonIgnore]
@@ -42,9 +42,12 @@ public class Expense : Entity
     {
         Portfolio = portfolio;
         PortfolioId = portfolio.Id;
-    } 
+    }
 
     public void AddRecurringTransaction(RecurringTransaction transaction)
-        => RecurringTransactions.Add(transaction);
+    {
+        Value += transaction.Value; 
+        RecurringTransactions.Add(transaction);
+    } 
 
 }

@@ -25,8 +25,10 @@ public class AddedValuePortfolioHandler : HandlerBase, IRequestHandler<AddedValu
         if(!CustomerIdIsEquals(portfolio,request.CustomerId))
             return Result.Failure(Errors.CustomerIdIsNotEqualPortfolioCustomerId);
         
-        portfolio.AddValue(request.Value,request.Type);
-
+        var resultAddValue = portfolio.AddValue(request.Value,request.Type);
+        if (!resultAddValue.IsSuccess)
+            return Result.Failure(resultAddValue.Error);
+        
         var result = await _mediator.Send(new AlterPercentageOfMarkRequest(request.CustomerId, request.Value));
         if (!result.IsSuccess)
            return result;

@@ -1,4 +1,5 @@
 using MediatR;
+using Monetra.Application.DTOs.Portfolio;
 using Monetra.Application.UseCases.Portfolio.Query.Request;
 using Monetra.Domain.BackOffice.Commum;
 using Monetra.Domain.BackOffice.Entities;
@@ -7,25 +8,26 @@ using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 namespace Monetra.Application.UseCases.Portfolio.Query.Handler;
 
 public class GetValueResultOfMonthHandler : HandlerBase , 
-    IRequestHandler<GetValueResultOfMonthRequest,Result<IEnumerable<Transaction>>>
+    IRequestHandler<GetValueResultOfMonthRequest,Result<GetValueResultMonthDto>>
 {
     public GetValueResultOfMonthHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
     }
 
-    public async  Task<Result<IEnumerable<Transaction>>> Handle(GetValueResultOfMonthRequest request, CancellationToken cancellationToken)
+    public async  Task<Result<GetValueResultMonthDto>> Handle(GetValueResultOfMonthRequest request, CancellationToken cancellationToken)
     {
         var ports = await _unitOfWork.PortfolioRepository.
             GetPortfolioWithTransactionFromCustumer(request.IdCustomer);
         var portfolio = ports.FirstOrDefault(x=>x.Id == request.IdPortfolio);
         if (portfolio is null || !IdCustomerIsEquals(portfolio, request.IdCustomer))
-            return Result<IEnumerable<Transaction>>.Failure(Errors.CustomerIdIsNotEqualPortfolioCustomerId);
+            return Result<GetValueResultMonthDto>.Failure(Errors.CustomerIdIsNotEqualPortfolioCustomerId);
 
         var months = Math.Abs(request.MonthsQuantity);
         var startOfLastMonth = DateTime.Now.AddMonths(-months);
 
-        var transactions = GetTransactionByDateRange(startOfLastMonth, DateTime.Now, portfolio); 
-        return Result<IEnumerable<Transaction>>.Success(transactions);
+        var transactionsInMonth = GetTransactionByDateRange(startOfLastMonth, DateTime.Now, portfolio);
+        var phrase = GeneratePhraseByTransactionInMonth(transactionsInMonth);
+        return Result<GetValueResultMonthDto>.Success(new (phrase,transactionsInMonth));
     }
 
     private bool IdCustomerIsEquals(Domain.BackOffice.Entities.Portfolio port , Guid idCustomer)
@@ -37,5 +39,12 @@ public class GetValueResultOfMonthHandler : HandlerBase ,
         return port
             .Transactions
             .Where(t => t.CreatedAt >= dateStart );
+    }
+
+    private string GeneratePhraseByTransactionInMonth(IEnumerable<Transaction> transaction)
+    {
+        if (transaction is null) return string.Empty;
+        var sumTransactions = transaction.Sum(x => x.Amount);
+        return $"In three months you have {sumTransactions * 3}";
     }
 }

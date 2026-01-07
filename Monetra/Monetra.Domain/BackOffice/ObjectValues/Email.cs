@@ -8,6 +8,7 @@ public class Email
     {
         
     }
+    
     public Email(string address)
     {
         if (!IsValid(address))

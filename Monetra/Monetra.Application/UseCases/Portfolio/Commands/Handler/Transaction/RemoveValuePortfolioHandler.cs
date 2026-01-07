@@ -25,7 +25,9 @@ public class RemoveValuePortfolioHandler : HandlerBase,IRequestHandler<RemoveVal
         if(!CustomerIdIsEquals(portfolio,request.CustomerId))
             return Result.Failure(Errors.CustomerIdIsNotEqualPortfolioCustomerId);
         
-        portfolio.RemoveValue(request.Value,request.Type);
+        var resultRemoveValue = portfolio.RemoveValue(request.Value,request.Type);
+        if (!resultRemoveValue.IsSuccess)
+            return Result.Failure(resultRemoveValue.Error);
         
         var resultMarkPercentage = await _mediator.Send(new AlterPercentageOfMarkRequest(request.CustomerId,-request.Value));
         if (!resultMarkPercentage.IsSuccess)
