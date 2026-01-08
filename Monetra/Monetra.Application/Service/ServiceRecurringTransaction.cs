@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
- using Monetra.Domain.BackOffice.Interfaces.Repostiries;
+using Monetra.Domain.BackOffice.Interfaces.Repostiries;
 using Monetra.Domain.BackOffice.Interfaces.Services;
 
 namespace Monetra.Application.Service;
@@ -46,7 +46,7 @@ public class ServiceRecurringTransaction :
             if (expense.Portfolio is not null)
             {
                 expense.Portfolio.RemoveValue(transaction.Value,
-                    transaction.TransactionType);
+                    transaction.TransactionType,new ("Recurring Transaction"));
                 unitOfWork.TransactionRepository.Create(expense.Portfolio.Transactions.Last());
                 unitOfWork.PortfolioRepository.Update(expense.Portfolio);
                 await unitOfWork.CommitAsync();

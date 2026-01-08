@@ -1,9 +1,8 @@
 using MediatR;
-using Monetra.Domain.BackOffice.Commum;
 using Monetra.Domain.BackOffice.Commum.Abstraction;
 using Monetra.Domain.BackOffice.Enum;
 
-namespace Monetra.Application.UseCases.Portfolio.Commands.Request;
+namespace Monetra.Application.UseCases.Portfolio.Commands.Request.Transaction;
 
-public record AddedValuePortfolioRequest(Guid IdPortfolio,Guid CustomerId,TransactionType Type,decimal Value)
+public record AddedValuePortfolioRequest(Guid IdPortfolio,Guid CustomerId,TransactionType Type,decimal Value,string NameCategory)
     : IRequest<Result>; 

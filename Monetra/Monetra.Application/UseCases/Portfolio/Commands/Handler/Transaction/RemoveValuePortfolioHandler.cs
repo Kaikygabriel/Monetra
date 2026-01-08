@@ -1,9 +1,12 @@
 using MediatR;
 using Monetra.Application.UseCases.Mark.Command.Request;
 using Monetra.Application.UseCases.Portfolio.Commands.Request;
+using Monetra.Application.UseCases.Portfolio.Commands.Request.Transaction;
 using Monetra.Domain.BackOffice.Commum;
 using Monetra.Domain.BackOffice.Commum.Abstraction;
+using Monetra.Domain.BackOffice.Entities;
 using Monetra.Domain.BackOffice.Interfaces.Repostiries;
+using Monetra.Domain.BackOffice.ObjectValues;
 
 namespace Monetra.Application.UseCases.Portfolio.Commands.Handler.Transaction;
 
@@ -17,6 +20,10 @@ public class RemoveValuePortfolioHandler : HandlerBase,IRequestHandler<RemoveVal
 
     public async Task<Result> Handle(RemoveValuePortfolioRequest request, CancellationToken cancellationToken)
     {
+        var categoryResult = Category.Factories.Create(request.NameCategory);
+        if (!categoryResult.IsSuccess)
+            return Result.Failure(categoryResult.Error);
+
         var portfolio = await _unitOfWork.PortfolioRepository.GetByPredicate(x => x.Id == request.IdPortfolio);
         
         if (portfolio is null || request.Value <= 0)
@@ -25,7 +32,7 @@ public class RemoveValuePortfolioHandler : HandlerBase,IRequestHandler<RemoveVal
         if(!CustomerIdIsEquals(portfolio,request.CustomerId))
             return Result.Failure(Errors.CustomerIdIsNotEqualPortfolioCustomerId);
         
-        var resultRemoveValue = portfolio.RemoveValue(request.Value,request.Type);
+        var resultRemoveValue = portfolio.RemoveValue(request.Value,request.Type,categoryResult.Value);
         if (!resultRemoveValue.IsSuccess)
             return Result.Failure(resultRemoveValue.Error);
         

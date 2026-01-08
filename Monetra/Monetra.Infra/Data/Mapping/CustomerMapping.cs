@@ -18,6 +18,10 @@ public class CustomerMapping : IEntityTypeConfiguration<Customer>
             .HasMaxLength(120)
             .HasColumnType("VARCHAR")
             .IsRequired();
+
+        builder.Property(x => x.Salary)
+            .HasDefaultValue(0)
+            .HasColumnType("MONEY");
         
         builder.Property(x => x.FinancialHealth)
             .HasConversion(x => x.Percentage, x => new FinancialHealth(x))

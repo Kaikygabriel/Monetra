@@ -12,8 +12,8 @@ using Monetra.Infra.Data.Context;
 namespace Monetra.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260101181138_CreateInitial.4")]
-    partial class CreateInitial4
+    [Migration("20260108163921_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,10 +31,17 @@ namespace Monetra.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<byte>("FinancialHealth")
+                        .HasColumnType("TINYINT")
+                        .HasColumnName("FinancialHealth");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(120)
                         .HasColumnType("VARCHAR");
+
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -45,6 +52,35 @@ namespace Monetra.Api.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Customer", (string)null);
+                });
+
+            modelBuilder.Entity("Monetra.Domain.BackOffice.Entities.Expense", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("PortfolioId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Value")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("MONEY")
+                        .HasDefaultValue(0m);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId")
+                        .IsUnique();
+
+                    b.ToTable("Expense", (string)null);
                 });
 
             modelBuilder.Entity("Monetra.Domain.BackOffice.Entities.Mark", b =>
@@ -61,6 +97,9 @@ namespace Monetra.Api.Migrations
 
                     b.Property<DateTime>("Deadline")
                         .HasColumnType("DATETIME");
+
+                    b.Property<int>("Percentage")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("TargetAmount")
                         .HasPrecision(10, 2)
@@ -91,6 +130,9 @@ namespace Monetra.Api.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ExpenseId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(120)
@@ -103,6 +145,10 @@ namespace Monetra.Api.Migrations
                         .HasName("Pk_Portofolio_Id");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("ExpenseId")
+                        .IsUnique()
+                        .HasFilter("[ExpenseId] IS NOT NULL");
 
                     b.ToTable("Portfolio", (string)null);
                 });
@@ -118,11 +164,11 @@ namespace Monetra.Api.Migrations
                         .HasMaxLength(120)
                         .HasColumnType("NVARCHAR");
 
+                    b.Property<Guid>("ExpenseId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<byte>("MonthDayPayment")
                         .HasColumnType("TINYINT");
-
-                    b.Property<Guid>("PortfolioId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("TransactionType")
                         .HasColumnType("int");
@@ -132,10 +178,9 @@ namespace Monetra.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MonthDayPayment");
+                    b.HasIndex("ExpenseId");
 
-                    b.HasIndex("PortfolioId")
-                        .IsUnique();
+                    b.HasIndex("MonthDayPayment");
 
                     b.ToTable("RecurringTransaction", (string)null);
                 });
@@ -149,10 +194,16 @@ namespace Monetra.Api.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("MONEY");
 
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("VARCHAR")
+                        .HasColumnName("Category");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("DATETIME");
 
-                    b.Property<Guid>("PortfolioId1")
+                    b.Property<Guid>("PortfolioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Type")
@@ -160,7 +211,7 @@ namespace Monetra.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PortfolioId1");
+                    b.HasIndex("PortfolioId");
 
                     b.ToTable("Transaction", (string)null);
                 });
@@ -193,13 +244,26 @@ namespace Monetra.Api.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Monetra.Domain.BackOffice.Entities.Expense", b =>
+                {
+                    b.HasOne("Monetra.Domain.BackOffice.Entities.Customer", "Customer")
+                        .WithOne("Expense")
+                        .HasForeignKey("Monetra.Domain.BackOffice.Entities.Expense", "CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("Fk_Expense_Customer");
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("Monetra.Domain.BackOffice.Entities.Mark", b =>
                 {
                     b.HasOne("Monetra.Domain.BackOffice.Entities.Customer", "Customer")
                         .WithOne("Mark")
                         .HasForeignKey("Monetra.Domain.BackOffice.Entities.Mark", "CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("Fk_Mark_Customer");
 
                     b.Navigation("Customer");
                 });
@@ -210,7 +274,12 @@ namespace Monetra.Api.Migrations
                         .WithMany("Portfolios")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("Fk_Portfolio_Customer");
+
+                    b.HasOne("Monetra.Domain.BackOffice.Entities.Expense", "Exepense")
+                        .WithOne("Portfolio")
+                        .HasForeignKey("Monetra.Domain.BackOffice.Entities.Portfolio", "ExpenseId");
 
                     b.OwnsOne("Monetra.Domain.BackOffice.ObjectValues.Investment", "FixedIncome", b1 =>
                         {
@@ -218,7 +287,25 @@ namespace Monetra.Api.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<decimal>("Value")
-                                .HasColumnType("MONEY");
+                                .HasColumnType("MONEY")
+                                .HasColumnName("FixedIncome");
+
+                            b1.HasKey("PortfolioId");
+
+                            b1.ToTable("Portfolio");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PortfolioId");
+                        });
+
+                    b.OwnsOne("Monetra.Domain.BackOffice.ObjectValues.Investment", "Reservation", b1 =>
+                        {
+                            b1.Property<Guid>("PortfolioId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<decimal>("Value")
+                                .HasColumnType("MONEY")
+                                .HasColumnName("Reservation");
 
                             b1.HasKey("PortfolioId");
 
@@ -234,7 +321,8 @@ namespace Monetra.Api.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<decimal>("Value")
-                                .HasColumnType("MONEY");
+                                .HasColumnType("MONEY")
+                                .HasColumnName("VariableIncome");
 
                             b1.HasKey("PortfolioId");
 
@@ -246,7 +334,12 @@ namespace Monetra.Api.Migrations
 
                     b.Navigation("Customer");
 
+                    b.Navigation("Exepense");
+
                     b.Navigation("FixedIncome")
+                        .IsRequired();
+
+                    b.Navigation("Reservation")
                         .IsRequired();
 
                     b.Navigation("VariableIncome")
@@ -255,20 +348,20 @@ namespace Monetra.Api.Migrations
 
             modelBuilder.Entity("Monetra.Domain.BackOffice.Entities.RecurringTransaction", b =>
                 {
-                    b.HasOne("Monetra.Domain.BackOffice.Entities.Portfolio", "Portfolio")
-                        .WithOne("RecurringTransaction")
-                        .HasForeignKey("Monetra.Domain.BackOffice.Entities.RecurringTransaction", "PortfolioId")
+                    b.HasOne("Monetra.Domain.BackOffice.Entities.Expense", "Expense")
+                        .WithMany("RecurringTransactions")
+                        .HasForeignKey("ExpenseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Portfolio");
+                    b.Navigation("Expense");
                 });
 
             modelBuilder.Entity("Monetra.Domain.BackOffice.Entities.Transaction", b =>
                 {
                     b.HasOne("Monetra.Domain.BackOffice.Entities.Portfolio", "Portfolio")
                         .WithMany("Transactions")
-                        .HasForeignKey("PortfolioId1")
+                        .HasForeignKey("PortfolioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -305,17 +398,24 @@ namespace Monetra.Api.Migrations
 
             modelBuilder.Entity("Monetra.Domain.BackOffice.Entities.Customer", b =>
                 {
+                    b.Navigation("Expense")
+                        .IsRequired();
+
                     b.Navigation("Mark")
                         .IsRequired();
 
                     b.Navigation("Portfolios");
                 });
 
+            modelBuilder.Entity("Monetra.Domain.BackOffice.Entities.Expense", b =>
+                {
+                    b.Navigation("Portfolio");
+
+                    b.Navigation("RecurringTransactions");
+                });
+
             modelBuilder.Entity("Monetra.Domain.BackOffice.Entities.Portfolio", b =>
                 {
-                    b.Navigation("RecurringTransaction")
-                        .IsRequired();
-
                     b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618

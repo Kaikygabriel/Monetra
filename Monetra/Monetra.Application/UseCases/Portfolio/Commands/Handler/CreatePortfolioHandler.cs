@@ -17,6 +17,7 @@ public class CreatePortfolioHandler: HandlerBase, IRequestHandler<CreatePortfoli
         Result<Domain.BackOffice.Entities.Portfolio> portfolioResultCreate = request.Model;
         if (!portfolioResultCreate.IsSuccess)
             return Result.Failure(portfolioResultCreate.Error);
+        
         if (!Guid.TryParse(request.Model.Userid, out var customerId))
            return Result.Failure(Errors.CustomerIdIsNotEqualPortfolioCustomerId);
 
@@ -27,13 +28,16 @@ public class CreatePortfolioHandler: HandlerBase, IRequestHandler<CreatePortfoli
             return Result.Failure(Errors.CustumerNoExisting);
 
         var portfolio = portfolioResultCreate.Value;
-        portfolio.CustomerId = customerExists.Id;
-        customerExists.AddPortifolio(portfolio);
+        AddCustomerInPortfolio(portfolio, customerExists);
         
         _unitOfWork.PortfolioRepository.Create(portfolio);
         await _unitOfWork.CommitAsync();
 
         return Result.Success();
     }
-
+    private void AddCustomerInPortfolio(Domain.BackOffice.Entities.Portfolio portfolio,Domain.BackOffice.Entities.Customer customer)
+    {
+        portfolio.CustomerId = customer.Id;
+        customer.AddPortifolio(portfolio);
+    }
 }

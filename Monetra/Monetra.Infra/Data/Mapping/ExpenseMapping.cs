@@ -18,6 +18,10 @@ public class ExpenseMapping : IEntityTypeConfiguration<Expense>
         builder.HasMany(x => x.RecurringTransactions)
             .WithOne(x => x.Expense)
             .HasForeignKey(x => x.ExpenseId);
+
+        builder.Property(x => x.Value)
+            .HasColumnType("MONEY")
+            .HasDefaultValue(0);
         
         builder.HasOne(x => x.Portfolio)
             .WithOne(x => x.Exepense)

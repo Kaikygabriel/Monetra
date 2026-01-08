@@ -20,7 +20,7 @@ public class Expense : Entity
     [JsonIgnore]
     public Customer Customer { get;}
 
-    public decimal Value { get; set; }
+    public decimal Value { get; private set; }
     public List<RecurringTransaction> RecurringTransactions { get; private set; } = new();
     public string Description { get; private set; }
     [JsonIgnore]

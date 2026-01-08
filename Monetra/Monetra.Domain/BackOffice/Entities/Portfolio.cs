@@ -58,7 +58,7 @@ public class Portfolio : Entity
     public void ConvertToVisible()
         => Visible = true;
 
-    private void ApplyTransaction(decimal signedValue, TransactionType type)
+    private void ApplyTransaction(decimal signedValue, TransactionType type,Category category)
     {
         if (type == TransactionType.FixedIncome)
             FixedIncome.AddValue(signedValue);
@@ -68,23 +68,23 @@ public class Portfolio : Entity
             Reservation.AddValue(signedValue);
         
         Transactions.Add(
-            Transaction.Factories.Create(Id, signedValue, type)
+            Transaction.Factories.Create(Id, signedValue, type,category)
         );
     }
 
-    public Result AddValue(decimal value, TransactionType type)
+    public Result AddValue(decimal value, TransactionType type,Category category)
     {
         if (value <= 0)
             return Result.Failure(new("Value.Invalid","Value invalid for added!"));
-        ApplyTransaction(value, type);
+        ApplyTransaction(value, type,category);
         return Result.Success();
     }
 
-    public Result RemoveValue(decimal value, TransactionType type)
+    public Result RemoveValue(decimal value, TransactionType type,Category category)
     {
         if (value <= 0) 
             return Result.Failure(new("Value.Invalid","Value invalid for remove!"));
-        ApplyTransaction(-value, type);
+        ApplyTransaction(-value, type,category);
         return Result.Success();
     }
 }

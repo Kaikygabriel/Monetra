@@ -9,15 +9,26 @@ public class TransactionMapping : IEntityTypeConfiguration<Transaction>
     public void Configure(EntityTypeBuilder<Transaction> builder)
     {
         builder.ToTable("Transaction");
+        
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Amount)
             .HasColumnType("MONEY")
             .IsRequired(true);
+        
         builder.Property(x => x.CreatedAt)
             .HasColumnType("DATETIME")
             .IsRequired(true);
+        
         builder.Property(x => x.Type)
             .IsRequired(true);
+        
+        builder.Property(x => x.Category)
+            .HasConversion(x => x.Name, b => new(b))
+            .HasMaxLength(120)
+            .HasColumnType("VARCHAR")
+            .HasColumnName("Category")
+            .IsRequired(true);
+        
     }
 }

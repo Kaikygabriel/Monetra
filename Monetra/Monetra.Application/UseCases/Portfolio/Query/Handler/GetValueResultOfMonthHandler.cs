@@ -14,19 +14,18 @@ public class GetValueResultOfMonthHandler : HandlerBase ,
     {
     }
 
-    public async  Task<Result<GetValueResultMonthDto>> Handle(GetValueResultOfMonthRequest request, CancellationToken cancellationToken)
+    public async Task<Result<GetValueResultMonthDto>> Handle(GetValueResultOfMonthRequest request,
+        CancellationToken cancellationToken)
     {
-        var ports = await _unitOfWork.PortfolioRepository.
-            GetPortfolioWithTransactionFromCustumer(request.IdCustomer);
-        var portfolio = ports.FirstOrDefault(x=>x.Id == request.IdPortfolio);
+        var ports = await _unitOfWork.PortfolioRepository.GetPortfolioWithTransactionFromCustumer(request.IdCustomer);
+        var portfolio = ports.FirstOrDefault(x => x.Id == request.IdPortfolio);
         if (portfolio is null || !IdCustomerIsEquals(portfolio, request.IdCustomer))
             return Result<GetValueResultMonthDto>.Failure(Errors.CustomerIdIsNotEqualPortfolioCustomerId);
 
-        var months = Math.Abs(request.MonthsQuantity);
-        var startOfLastMonth = DateTime.Now.AddMonths(-months);
+        var startOfLastMonth = DateTime.Now.AddMonths(-1);
 
         var transactionsInMonth = GetTransactionByDateRange(startOfLastMonth, DateTime.Now, portfolio);
-        var phrase = GeneratePhraseByTransactionInMonth(transactionsInMonth);
+        var phrase = $"{GeneratePhraseByTransactionInMonth(transactionsInMonth)};{GeneratePhraseByResultIfNoRemove(transactionsInMonth)}";
         return Result<GetValueResultMonthDto>.Success(new (phrase,transactionsInMonth));
     }
 
@@ -44,7 +43,13 @@ public class GetValueResultOfMonthHandler : HandlerBase ,
     private string GeneratePhraseByTransactionInMonth(IEnumerable<Transaction> transaction)
     {
         if (transaction is null) return string.Empty;
-        var sumTransactions = transaction.Sum(x => x.Amount);
-        return $"In three months you have {sumTransactions * 3}";
+        var sumTransactions = transaction.Where(x=>x.Amount>0).Sum(x => x.Amount);
+        return $"In three months you have {(sumTransactions * 3).ToString("C")}";
+    }
+    private string GeneratePhraseByResultIfNoRemove(IEnumerable<Transaction> transaction)
+    {
+        if (transaction is null) return string.Empty;
+        var sumTransactions = transaction.Where(x=>x.Amount <= 0).Sum(x => x.Amount * -1);
+        return $"You have an extra {sumTransactions.ToString("C")} if you don't remove yourself. ";
     }
 }

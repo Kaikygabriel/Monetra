@@ -38,7 +38,9 @@ namespace Monetra.Api.Migrations
                         .HasColumnType("VARCHAR");
 
                     b.Property<decimal>("Salary")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("MONEY")
+                        .HasDefaultValue(0m);
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -66,6 +68,11 @@ namespace Monetra.Api.Migrations
 
                     b.Property<Guid?>("PortfolioId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Value")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("MONEY")
+                        .HasDefaultValue(0m);
 
                     b.HasKey("Id");
 
@@ -185,6 +192,12 @@ namespace Monetra.Api.Migrations
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("MONEY");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("VARCHAR")
+                        .HasColumnName("Category");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("DATETIME");

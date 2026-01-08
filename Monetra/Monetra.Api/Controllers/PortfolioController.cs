@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Monetra.Application.UseCases.Portfolio.Commands.Request;
 using Monetra.Application.UseCases.Portfolio.Commands.Request.RecurringTransaction;
+using Monetra.Application.UseCases.Portfolio.Commands.Request.Transaction;
 using Monetra.Application.UseCases.Portfolio.Query.Request;
 
 namespace Monetra.Api.Controllers;
