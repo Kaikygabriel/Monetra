@@ -1,8 +1,7 @@
 <p align="center">
   <h1 align="center">📊 Monetra</h1>
   <p align="center">
-    API de gerenciamento de carteira financeira construída com foco em
-    <strong>Clean Architecture</strong>, <strong>CQRS</strong> e boas práticas de design de software.
+    API de gerenciamento de carteira financeira
   </p>
 </p>
 
