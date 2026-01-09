@@ -12,7 +12,7 @@ namespace Monetra.Test.Mock;
 public class FakeUnitOfWork : IUnitOfWork
 {
     public ICustomerRepository CustomerRepository { get; } = new FakeCustomerRepository();
-    public IPortfolioRepository PortfolioRepository { get; }
+    public IPortfolioRepository PortfolioRepository { get; } = new FakePortfolioRepository();
     public IUserRepository UserRepository { get; } = new FakeUserRepository();
     public ITransactionRepository TransactionRepository { get; }
     public IMarkRepository MarkRepository { get; } = new FakeMarkRepository();

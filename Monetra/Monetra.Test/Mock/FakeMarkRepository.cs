@@ -17,7 +17,7 @@ public class FakeMarkRepository : IMarkRepository
 
     private void Seed()
     {
-        var customerId1 = Guid.NewGuid();
+        var customerId1 = Guid.Parse("3f6c9b8a-4e21-4c7d-9c5b-8e2d7a4f1c92");
         var customerId2 = Guid.NewGuid();
 
         var mark1 = Mark.Factories.Create(

@@ -57,13 +57,12 @@ public class RegisterCustomerTest
     {
         var request = new RegisterCostumerRequest(new RegisterCustomerDTO()
         {
-            Name = "testeWA",
+            Name = "teste",
             UserDto = new RegisterUserDto()
             {
-                Email = "testeAD@email.com",
+                Email = "teste@email.com",
                 Password = "teste123"
-            },
-            DescriptionExpense = "teste"
+            }
         });
         var response = await _registerCustomerHandler.Handle(request, CancellationToken.None);
         Assert.True(response.IsSuccess);
