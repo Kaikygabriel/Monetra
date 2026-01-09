@@ -26,4 +26,21 @@ public class PortfolioRepository: Repository<Domain.BackOffice.Entities.Portfoli
         return listP;
     }
 
+    public async Task<IEnumerable<Domain.BackOffice.Entities.Portfolio>> GetAllByVisible(int skip, int take)
+    {
+        if (skip < 0 || take < 0)
+        {
+            skip = 0;
+            take = 25;
+        }
+        if (take > 50)
+            take = 50;
+
+        return await _context.Portfolios
+            .AsNoTracking()
+            .Skip(skip)
+            .Take(take)
+            .Where(x => x.Visible)
+            .ToListAsync();
+    }
 }

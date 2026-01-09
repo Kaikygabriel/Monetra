@@ -23,7 +23,7 @@ public class ServiceRecurringTransaction :
         {
             var now = DateTime.Now;
 
-            if (now.Minute == 47 && (_lastExecution == null || _lastExecution.Value.Date != now.Date))
+            if (now.Hour == 18 && (_lastExecution == null || _lastExecution.Value.Date != now.Date))
             {
                 await MakeRecurringTransactionByDayCurrent();
                 _lastExecution = now;
@@ -46,13 +46,11 @@ public class ServiceRecurringTransaction :
             if (expense.Portfolio is not null)
             {
                 expense.Portfolio.RemoveValue(transaction.Value,
-                    transaction.TransactionType,new ("Recurring Transaction"));
+                    transaction.TransactionType,new (transaction.CostName + "- RecurringTransaction"));
                 unitOfWork.TransactionRepository.Create(expense.Portfolio.Transactions.Last());
                 unitOfWork.PortfolioRepository.Update(expense.Portfolio);
                 await unitOfWork.CommitAsync();
             }
         }
-        
-        await unitOfWork.CommitAsync();
     }
 }

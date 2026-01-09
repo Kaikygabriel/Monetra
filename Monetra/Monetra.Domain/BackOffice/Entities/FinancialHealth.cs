@@ -16,10 +16,20 @@ public class FinancialHealth  : Entity
 
     public void Recalculate(Customer customer,Expense expense,IEnumerable<Portfolio>portfolios)
     {
+        var salary = customer.Salary;
+        var totalRecurringTransactions = expense.RecurringTransactions.Sum(x=>x.Value);
+
+        if (salary <= 0 || totalRecurringTransactions <= 0)
+        {
+            Percentage = 0;
+            return; 
+        }
         var liquidity = CalculateLiquidityScore
-            (customer.Salary,expense.RecurringTransactions.Sum(x=>x.Value));
+            (salary,totalRecurringTransactions);
+        
         var commitment = CalculateIncomeCommitmentScore
-            (customer.Salary,expense.RecurringTransactions.Sum(x=>x.Value));
+            (salary,totalRecurringTransactions);
+        
         var transactions = portfolios.Select(x => x.Transactions.ToList());
         int regularity = 0 ; 
         foreach(var transaction in transactions)

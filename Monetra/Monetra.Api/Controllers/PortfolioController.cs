@@ -24,6 +24,12 @@ public class PortfolioController : ControllerBase
         var result = await _mediator.Send(request);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
+    [HttpGet("GetAllActive")]
+    public async Task<ActionResult> GetAllActive([FromQuery] GetAllPortfolioActiveRequest request)
+    {
+        var result = await _mediator.Send(request);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+    }
     [HttpGet("ResultOfMonth")]
     public async Task<ActionResult> ResultOfMonth([FromQuery] GetValueResultOfMonthRequest request)
     {
