@@ -18,39 +18,17 @@ public class FakePortfolioRepository : IPortfolioRepository
     {
         var customerId1 = Guid.Parse("3f6c9b8a-4e21-4c7d-9c5b-8e2d7a4f1c92");
         var customerId2 = Guid.NewGuid();
-
+        var port1 = 
+            Portfolio.Factories.
+                Create(new Investment(200),new(200),
+                   new(200),"teste").Value;
+        port1.Id = Guid.Parse("3f6c9b8a-4e21-4c7d-9c5b-8e2d7a4f1c92");
+        port1.CustomerId = customerId1;
+        
         return new List<Portfolio>
         {
-            new Portfolio(
-                fixedIncome: new Investment(5000),
-                variableIncome: new Investment(3000),
-                reservation: new Investment(2000),
-                title: "Carteira Principal"
-            )
-            {
-                Id = Guid.Parse("3f6c9b8a-4e21-4c7d-9c5b-8e2d7a4f1c92"),
-                CustomerId = customerId1
-            },
-
-            new Portfolio(
-                fixedIncome: new Investment(8000),
-                variableIncome: new Investment(12000),
-                reservation: new Investment(5000),
-                title: "Investimentos Longo Prazo"
-            )
-            {
-                CustomerId = customerId1
-            },
-
-            new Portfolio(
-                fixedIncome: new Investment(2000),
-                variableIncome: new Investment(1500),
-                reservation: new Investment(1000),
-                title: "Carteira Secundária"
-            )
-            {
-                CustomerId = customerId2
-            }
+            port1
+            
         };
     }
 
@@ -83,4 +61,9 @@ public class FakePortfolioRepository : IPortfolioRepository
             _portfolios
                 .Where(p => p.CustomerId == id && p.Transactions.Any())
         );
+
+    public Task<IEnumerable<Portfolio>> GetAllByVisible(int skip, int take)
+    {
+        throw new NotImplementedException();
+    }
 }
